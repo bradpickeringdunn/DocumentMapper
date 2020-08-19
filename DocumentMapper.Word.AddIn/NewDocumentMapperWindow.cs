@@ -37,6 +37,12 @@ namespace DocumentMapper.Word.AddIn
                 FileStream file = System.IO.File.Create(path);
                 writer.Serialize(file, newMap);
                 file.Close();
+
+                Globals.ThisAddIn.Application.ActiveDocument.Variables.Add(ApplicationVariables.DocumentMapFilePath, path);
+                Globals.ThisAddIn.Application.ActiveDocument.Save();
+
+                this.Hide();
+                this.Dispose();
             }
 
         }

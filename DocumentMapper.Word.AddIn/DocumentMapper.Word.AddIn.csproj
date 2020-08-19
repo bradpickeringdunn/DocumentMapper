@@ -163,6 +163,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ApplicationVariables.cs" />
     <Compile Include="DocumentMapperRibbon.cs">
       <SubType>Component</SubType>
     </Compile>
