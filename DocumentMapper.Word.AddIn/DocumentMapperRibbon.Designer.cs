@@ -15,9 +15,6 @@ namespace DocumentMapper.Word.AddIn
             InitializeComponent();
         }
 
-        
-
-
         /// <summary> 
         /// Clean up any resources being used.
         /// </summary>
@@ -90,6 +87,7 @@ namespace DocumentMapper.Word.AddIn
             this.UnLinkDocumentMapBtn.Label = "Un Link Document map";
             this.UnLinkDocumentMapBtn.Name = "UnLinkDocumentMapBtn";
             this.UnLinkDocumentMapBtn.ShowImage = true;
+            this.UnLinkDocumentMapBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.UnLinkDocumentMapBtn_Click);
             // 
             // DocumentMapperRibbon
             // 
@@ -123,6 +121,5 @@ namespace DocumentMapper.Word.AddIn
             get { return this.GetRibbon<DocumentMapperRibbon>(); }
         }
 
-        
     }
 }

@@ -28,5 +28,10 @@ namespace DocumentMapper.Word.AddIn
         {
             Globals.ThisAddIn.Application.ActiveDocument.Save();
         }
+
+        private void UnLinkDocumentMapBtn_Click(object sender, RibbonControlEventArgs e)
+        {
+            Utils.UnLinkDocumentMap();
+        }
     }
 }

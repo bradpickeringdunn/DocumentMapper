@@ -1,40 +1,77 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
-using Word = Microsoft.Office.Interop.Word;
-using Office = Microsoft.Office.Core;
-using Microsoft.Office.Tools.Word;
+﻿using Office = Microsoft.Office.Core;
 using Microsoft.Office.Interop.Word;
+using System.Windows.Forms.Integration;
 
 namespace DocumentMapper.Word.AddIn
 {
     public partial class ThisAddIn
     {
+        private DocumentMaperTaskPane documentMaperTaskPane;
+        private Microsoft.Office.Tools.CustomTaskPane myCustomTaskPane;
+        
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            Globals.ThisAddIn.Application.DocumentChange += new ApplicationEvents4_DocumentChangeEventHandler(OnDocumentChange);
+            this.Application.DocumentOpen += new ApplicationEvents4_DocumentOpenEventHandler(OnDocumentOpe);
+            this.Application.DocumentBeforeSave += new ApplicationEvents4_DocumentBeforeSaveEventHandler(DocumentBeforeSave);
         }
 
-        void OnDocumentChange()
+        private void CreateTaskPane()
         {
-            var filePath = ApplicationVariables.GetVariable(ApplicationVariables.DocumentMapFilePath);
-            var ribbon = Globals.Ribbons.GetRibbon<DocumentMapperRibbon>();
 
-            if (string.IsNullOrEmpty(filePath))
+            if (Utils.ActiveDocumentLinkedToDocumentMap())
             {
-                ribbon.UnLinkDocumentMapBtn.Visible = false;
+                var taskPaneContainer = new TaskPaneContainer();
+                var elementHost = new ElementHost() { Child = new DocumentMaperTaskPane() };
+                taskPaneContainer.Controls.Add(elementHost);
+                elementHost.Dock = System.Windows.Forms.DockStyle.Fill;
+
+                myCustomTaskPane = this.CustomTaskPanes.Add(taskPaneContainer, "taskPaneContainer");
+                myCustomTaskPane.DockPosition = Office.MsoCTPDockPosition.msoCTPDockPositionRight;
+                myCustomTaskPane.Visible = true;
+                myCustomTaskPane.Width = 300;
             }
             else
             {
-                ribbon.LinkDocumentMapGroup.Visible = false;
+
             }
         }
 
-        private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
+        public void InitializeDocumentMapper()
         {
+            ShowDocumentMapperRibbon();
+            CreateTaskPane();
         }
+
+        private void ShowDocumentMapperRibbon()
+        {
+            var ribbon = Globals.Ribbons.GetRibbon<DocumentMapperRibbon>();
+
+            if (Utils.ActiveDocumentLinkedToDocumentMap())
+            {
+                ribbon.UnLinkDocumentMapBtn.Visible = true;
+                ribbon.LinkDocumentMapGroup.Visible = false;
+            }
+            else
+            {
+                ribbon.UnLinkDocumentMapBtn.Visible = false;
+                ribbon.LinkDocumentMapGroup.Visible = true;
+            }
+        }
+
+        private void OnDocumentOpe(Microsoft.Office.Interop.Word.Document Doc)
+        {
+            InitializeDocumentMapper();
+        }
+
+        private void DocumentBeforeSave(Microsoft.Office.Interop.Word.Document Doc, ref bool SaveAsUI, ref bool Cancel)
+        {
+            if (Utils.ActiveDocumentLinkedToDocumentMap())
+            {
+                var path = Utils.DocumentMapperFilelocation();
+                Utils.SaveDocumentMap(DocumentMapping.Current, path);
+            }
+        }
+
 
         #region Document Ribbon
 
@@ -51,7 +88,6 @@ namespace DocumentMapper.Word.AddIn
         private void InternalStartup()
         {
             this.Startup += new System.EventHandler(ThisAddIn_Startup);
-            this.Shutdown += new System.EventHandler(ThisAddIn_Shutdown);
         }
         
         #endregion

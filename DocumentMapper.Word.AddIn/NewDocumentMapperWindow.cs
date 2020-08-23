@@ -30,13 +30,8 @@ namespace DocumentMapper.Word.AddIn
             else {
                 var newMap = new DocumentMap();
                 newMap.LinkedDocuments.Add("some document path.");
-
-                var writer = new XmlSerializer(typeof(DocumentMap));
                 var path = $"{FilePathTxt.Text}/{DocumentMapFilenameTxt.Text}.xml";
-
-                FileStream file = System.IO.File.Create(path);
-                writer.Serialize(file, newMap);
-                file.Close();
+                Utils.SaveDocumentMap(newMap, path);
 
                 Globals.ThisAddIn.Application.ActiveDocument.Variables.Add(ApplicationVariables.DocumentMapFilePath, path);
                 Globals.ThisAddIn.Application.ActiveDocument.Save();

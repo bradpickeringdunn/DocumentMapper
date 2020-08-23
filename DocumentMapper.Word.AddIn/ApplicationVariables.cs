@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace DocumentMapper.Word.AddIn
 {
@@ -12,7 +13,14 @@ namespace DocumentMapper.Word.AddIn
             {
                 variable = Globals.ThisAddIn.Application.ActiveDocument.Variables[variableName].Value;
             }
-            catch(NullReferenceException){}
+            catch(Exception ex){
+            
+                if(ex.GetType() != typeof(COMException))
+                {                    
+                    throw ex;
+                }
+
+            }
 
             return variable;
         }

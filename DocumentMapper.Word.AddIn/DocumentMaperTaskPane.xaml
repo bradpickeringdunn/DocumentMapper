@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="DocumentMapper.Word.AddIn.DocumentMaperTaskPane"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DocumentMapper.Word.AddIn"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Loaded="UserControl_Loaded">
+    <Grid x:Name="DocumentMap">
+        <Button Content="Add Mapping" HorizontalAlignment="Left" VerticalAlignment="Top" Width="91" Margin="36,10,0,0" Click="Button_Click"/>
+        <TreeView x:Name="DocumentMapTreeView" Margin="0,38,37,10">
+
+        </TreeView>
+        <Button Content="Edit Mapping" HorizontalAlignment="Left" Margin="177,10,0,0" VerticalAlignment="Top" Width="91" Click="Button_Click_1"/>
+    </Grid>
+</UserControl>

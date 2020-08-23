@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentMapper.Word.AddIn", "DocumentMapper.Word.AddIn\DocumentMapper.Word.AddIn.csproj", "{3BB5772C-72AA-4235-B8F5-6BDBE627F036}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentMapper.Models", "DocumentMapper.Models\DocumentMapper.Models.csproj", "{F1A74BB9-4BA5-4602-911E-080B7639B7DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocumentMapper.Models", "DocumentMapper.Models\DocumentMapper.Models.csproj", "{F1A74BB9-4BA5-4602-911E-080B7639B7DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentMapper.Models.Tests", "DocumentMapper.Models.Tests\DocumentMapper.Models.Tests.csproj", "{92EACB02-21D2-4233-9094-7CB651D14DE2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{F1A74BB9-4BA5-4602-911E-080B7639B7DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1A74BB9-4BA5-4602-911E-080B7639B7DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1A74BB9-4BA5-4602-911E-080B7639B7DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92EACB02-21D2-4233-9094-7CB651D14DE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92EACB02-21D2-4233-9094-7CB651D14DE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92EACB02-21D2-4233-9094-7CB651D14DE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92EACB02-21D2-4233-9094-7CB651D14DE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
