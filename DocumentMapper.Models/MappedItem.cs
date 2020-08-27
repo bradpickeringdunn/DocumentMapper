@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace DocumentMapper.Models
 {
@@ -62,6 +64,18 @@ namespace DocumentMapper.Models
 
             newMappedItem.Position = _childMappedItems.Count > 0 ? _childMappedItems.Count + 1 : 0;
             _childMappedItems.Add(newMappedItem);
+        }
+
+        public string ThisMappedItemToXMLString()
+        {
+            MappedItem onlyThisMappedItem = this;
+            onlyThisMappedItem.ChildMappedItems.Clear();
+            using (StringWriter stringwriter = new System.IO.StringWriter())
+            {
+                var serializer = new XmlSerializer(onlyThisMappedItem.GetType());
+                serializer.Serialize(stringwriter, onlyThisMappedItem);
+                return stringwriter.ToString();
+            }
         }
 
     }

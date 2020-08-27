@@ -1,12 +1,18 @@
 ﻿using DocumentMapper.Models;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace DocumentMapper.Word.AddIn
 {
     public static class Utils
     {
+        public async static void Await(this Task task)
+        {
+            await task;
+        }
+
         public static DocumentMap DocumentMap
         {
             get

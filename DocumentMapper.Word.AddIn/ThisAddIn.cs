@@ -1,6 +1,12 @@
 ﻿using Office = Microsoft.Office.Core;
 using Microsoft.Office.Interop.Word;
 using System.Windows.Forms.Integration;
+using Microsoft.Office.Tools.Word;
+using System.Windows;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System;
+using DocumentMapper.Models;
 
 namespace DocumentMapper.Word.AddIn
 {
@@ -13,7 +19,10 @@ namespace DocumentMapper.Word.AddIn
         {
             this.Application.DocumentOpen += new ApplicationEvents4_DocumentOpenEventHandler(OnDocumentOpe);
             this.Application.DocumentBeforeSave += new ApplicationEvents4_DocumentBeforeSaveEventHandler(DocumentBeforeSave);
+           
         }
+
+
 
         private void CreateTaskPane()
         {
@@ -40,6 +49,7 @@ namespace DocumentMapper.Word.AddIn
         {
             ShowDocumentMapperRibbon();
             CreateTaskPane();
+            DocumentMapping.MapDocumentControlToMappedItem().Await();
         }
 
         private void ShowDocumentMapperRibbon()

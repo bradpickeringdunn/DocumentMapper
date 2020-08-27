@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.SymbolStore;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 
@@ -37,6 +38,12 @@ namespace DocumentMapper.Models
                     parentItem.ChildMappedItems.Add(mappedItem);
                 }
             }
+            else
+            {
+                mappedItem.Position = this.MappedItems.Count > 0 ? this.MappedItems.Count + 1 : 0;
+                mappedItem.IsRootItem = true;
+                this.MappedItems.Add(mappedItem);
+            }
         }
 
         private MappedItem FindMappedItem(Guid mappedItemId)
@@ -72,5 +79,26 @@ namespace DocumentMapper.Models
         /// Get's and sets all the documents that are linked to this map.
         /// </summary>
         public List<string> LinkedDocuments { get; set; }
+
+        public MappedItem FindMappedItem(Guid mappedItemId, IList<MappedItem> childMappedItems = null)
+        {
+            var foundItem = default(MappedItem);
+
+            childMappedItems = childMappedItems ?? MappedItems;
+            foreach (var childitem in childMappedItems)
+            {
+                if (childitem.Id == mappedItemId)
+                {
+                    foundItem = childitem;
+                    break;
+                }
+                else if (childitem.ChildMappedItems.Any())
+                {
+                    foundItem = FindMappedItem(mappedItemId, childitem.ChildMappedItems);
+                }
+            }
+
+            return foundItem;
+        }
     }
 }
