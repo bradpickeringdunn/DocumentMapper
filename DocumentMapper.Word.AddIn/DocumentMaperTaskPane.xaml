@@ -8,10 +8,19 @@
              d:DesignHeight="450" d:DesignWidth="800"
              Loaded="UserControl_Loaded">
     <Grid x:Name="DocumentMap">
-        <Button x:Name="AddNewMapping" Content="Add Mapping" HorizontalAlignment="Left" VerticalAlignment="Top" Width="91" Margin="36,10,0,0" Click="Button_Click"/>
-        <TreeView x:Name="DocumentMapTreeView" Margin="0,38,37,10">
-
+        <Button x:Name="AddNewMapping" Content="Quick Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" Margin="10,10,0,0" Click="Button_Click" IsEnabled="False"/>
+        <TreeView x:Name="DocumentMapTreeView" Margin="0,72,37,164">
+            <TreeViewItem>
+                <StackPanel Height="32" Margin="0,9,0,-25" VerticalAlignment="Top" Width="100" Orientation="Horizontal">
+                    <Label Height="23">Text box sfsdfdfsd</Label>
+                    <Button Content="Add" Width="54" Margin="0,0,0,4"/>
+                </StackPanel>
+            </TreeViewItem>
         </TreeView>
-        <Button x:Name="EditMapping" Content="Edit Mapping" HorizontalAlignment="Left" Margin="177,10,0,0" VerticalAlignment="Top" Width="91" Click="Button_Click_1"/>
+        <Button x:Name="EditMapping" Content="Edit Mapping" HorizontalAlignment="Left" Margin="106,10,0,0" VerticalAlignment="Top" Width="80" Click="EditMappedTreeViewItem_Click" IsEnabled="False"/>
+        <Button x:Name="DeleteMappedItemBtn" Content="Delete Item" HorizontalAlignment="Left" Height="20" Margin="214,44,0,0" VerticalAlignment="Top" Click="DeleteMappedTreeViewItem_Click" Width="82" IsEnabled="False"/>
+        <TextBlock x:Name="MappedItemNotesTex" HorizontalAlignment="Left" Height="140" Margin="0,334,0,-24" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="763"/>
+        <Label Content="Notes:" HorizontalAlignment="Left" Height="22" Margin="0,307,0,0" VerticalAlignment="Top" Width="86"/>
+        <Button x:Name="AddMappingBtn" Content="Add Item" HorizontalAlignment="Left" Height="20" Margin="10,44,0,0" VerticalAlignment="Top" Width="76" Click="AddMappingBtn_Click"/>
     </Grid>
 </UserControl>

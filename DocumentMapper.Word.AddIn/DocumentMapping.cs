@@ -24,19 +24,7 @@ namespace DocumentMapper.Word.AddIn
         }
 
         static DocumentMap _currentDocumentMap;
-
-        public static IDictionary<string, MappedItem> FlattenedMappeditems
-        {
-            get
-            {
-                if (!_flattenedMappeditems.Any())
-                {
-                    FlattenListOfMappedItems(Current.MappedItems);
-                }
-                return _flattenedMappeditems;
-            }
-        }
-
+                
         private static Dictionary<string, MappedItem> _flattenedMappeditems = new Dictionary<string, MappedItem>();
 
         static void FlattenListOfMappedItems(List<MappedItem> mappedItems)
@@ -68,7 +56,8 @@ namespace DocumentMapper.Word.AddIn
                     switch (control.Type)
                     {
                         case WdContentControlType.wdContentControlText:
-                            var mappedItem = (MappedItem)DocumentMapping.FlattenedMappeditems[control.Tag];
+
+                            var mappedItem = DocumentMapping.Current.MappedItemDictionary[control.Tag];
                             control.LockContents = false;
                             control.LockContentControl = false;
                             control.Range.Text = mappedItem.Name;
@@ -129,7 +118,27 @@ namespace DocumentMapper.Word.AddIn
 
         }
 
+        internal async static System.Threading.Tasks.Task RemoveMappedControls(string mappedItemId)
+        {
+            var controls = await GetAllContentControls(mappedItemId);
+            controls.ForEach(control =>
+            {
+                switch (control.Type)
+                {
+                    
+                    case WdContentControlType.wdContentControlText:
 
+                        control.LockContents = false;
+                        control.LockContentControl = false;
+                        var range = control.Range;
+                        var text = control.Range.Text;
+                        control.Delete();
 
+                        Globals.ThisAddIn.Application.ActiveWindow.Document.Range(range.Start, range.End).Text = text;
+                        
+                        break;
+                }
+            });
+        }
     }
 }

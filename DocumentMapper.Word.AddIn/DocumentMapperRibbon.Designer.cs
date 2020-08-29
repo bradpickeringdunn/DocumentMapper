@@ -38,9 +38,9 @@ namespace DocumentMapper.Word.AddIn
         {
             this.DocumentMapper = this.Factory.CreateRibbonTab();
             this.LinkDocumentMapGroup = this.Factory.CreateRibbonGroup();
+            this.UnlinkDocumentMapGroup = this.Factory.CreateRibbonGroup();
             this.NewDocumentMapBtn = this.Factory.CreateRibbonButton();
             this.LinkDocumentMapBtn = this.Factory.CreateRibbonButton();
-            this.UnlinkDocumentMapGroup = this.Factory.CreateRibbonGroup();
             this.UnLinkDocumentMapBtn = this.Factory.CreateRibbonButton();
             this.DocumentMapper.SuspendLayout();
             this.LinkDocumentMapGroup.SuspendLayout();
@@ -61,6 +61,11 @@ namespace DocumentMapper.Word.AddIn
             this.LinkDocumentMapGroup.Items.Add(this.LinkDocumentMapBtn);
             this.LinkDocumentMapGroup.Name = "LinkDocumentMapGroup";
             // 
+            // UnlinkDocumentMapGroup
+            // 
+            this.UnlinkDocumentMapGroup.Items.Add(this.UnLinkDocumentMapBtn);
+            this.UnlinkDocumentMapGroup.Name = "UnlinkDocumentMapGroup";
+            // 
             // NewDocumentMapBtn
             // 
             this.NewDocumentMapBtn.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -72,14 +77,10 @@ namespace DocumentMapper.Word.AddIn
             // LinkDocumentMapBtn
             // 
             this.LinkDocumentMapBtn.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.LinkDocumentMapBtn.Label = "Link Document map";
+            this.LinkDocumentMapBtn.Label = "Link Document Map";
             this.LinkDocumentMapBtn.Name = "LinkDocumentMapBtn";
             this.LinkDocumentMapBtn.ShowImage = true;
-            // 
-            // UnlinkDocumentMapGroup
-            // 
-            this.UnlinkDocumentMapGroup.Items.Add(this.UnLinkDocumentMapBtn);
-            this.UnlinkDocumentMapGroup.Name = "UnlinkDocumentMapGroup";
+            this.LinkDocumentMapBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.LinkDocumentMapBtn_Click);
             // 
             // UnLinkDocumentMapBtn
             // 

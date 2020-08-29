@@ -28,13 +28,8 @@ namespace DocumentMapper.Word.AddIn
                 MessageBox.Show("You must provide a file name and a file path", "File path error");
             }
             else {
-                var newMap = new DocumentMap();
-                newMap.LinkedDocuments.Add("some document path.");
                 var path = $"{FilePathTxt.Text}/{DocumentMapFilenameTxt.Text}.xml";
-                Utils.SaveDocumentMap(newMap, path);
-
-                Globals.ThisAddIn.Application.ActiveDocument.Variables.Add(ApplicationVariables.DocumentMapFilePath, path);
-                Globals.ThisAddIn.Application.ActiveDocument.Save();
+                Utils.LinkDocumentMap(path);
 
                 this.Hide();
                 this.Dispose();
@@ -47,6 +42,7 @@ namespace DocumentMapper.Word.AddIn
             SaveNewDocumentMapDialog.ShowDialog();
             _Filepath = SaveNewDocumentMapDialog.SelectedPath;
             FilePathTxt.Text = _Filepath;
+            CreateNewDocumentMap.Enabled = true;
         }
     }
 }

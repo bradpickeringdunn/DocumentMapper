@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml.Serialization;
@@ -46,6 +47,32 @@ namespace DocumentMapper.Models
         
         public bool IsRootItem { get; set; }
                
+        public Dictionary<Guid, MappedItem> GetChildMappedItems(List<MappedItem> ChildMappedItems)
+        {
+            var childMappedItems = new Dictionary<Guid, MappedItem>();
+
+            foreach (var child in ChildMappedItems)
+            {
+                if (!childMappedItems.ContainsKey(child.Id))
+                {
+                    childMappedItems.Add(child.Id, child);
+                }
+
+                if (child.ChildMappedItems.Any())
+                {
+                    foreach(var c in GetChildMappedItems(child.ChildMappedItems))
+                    {
+                        if (!childMappedItems.ContainsKey(c.Key))
+                        {
+                            childMappedItems.Add(c.Key, c.Value);
+                        }
+                    }
+                }
+            }
+
+            return childMappedItems;
+        }
+
         public List<MappedItem> ChildMappedItems {
             get
             {
@@ -53,9 +80,11 @@ namespace DocumentMapper.Models
             }
         }
 
+        public string Notes { get; set; }
+
         private List<MappedItem> _childMappedItems = new List<MappedItem>();
 
-        public void AddChildMappedItem(MappedItem newMappedItem)
+        public void AddChildMappedItem(MappedItem newMappedItem, ref DocumentMap documentmap)
         {
             if(this.Name == newMappedItem.Name)
             {
@@ -78,5 +107,23 @@ namespace DocumentMapper.Models
             }
         }
 
+        internal void DeleteChildMappedItem(MappedItem mappedItem)
+        {
+            int? itemIdex = null;
+            for(var i =0; i< ChildMappedItems.Count; i++)
+            {
+                if(ChildMappedItems[i].Id == mappedItem.Id)
+                {
+                    itemIdex = i;
+                    break;
+                }
+            }
+
+            if (itemIdex.HasValue)
+            {
+                ChildMappedItems.RemoveAt(itemIdex.Value);
+            }
+            
+        }
     }
 }

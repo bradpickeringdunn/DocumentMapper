@@ -28,5 +28,19 @@ namespace DocumentMapper.Word.AddIn
         {
             Utils.UnLinkDocumentMap();
         }
+
+        private void LinkDocumentMapBtn_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                Globals.ThisAddIn.Application.ActiveDocument.Save();
+                var linkToDocumentMapper = new LinkToDocumentMapperWindow();
+                linkToDocumentMapper.ShowDialog();
+            }
+            catch (System.Runtime.InteropServices.COMException)
+            {
+                _ = MessageBox.Show("YOur document needs to be saved before a document map can be linked.  Save your document and try again.", "Link Document Map");
+            }
+        }
     }
 }

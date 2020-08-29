@@ -99,6 +99,7 @@
             // 
             // CreateNewDocumentMap
             // 
+            this.CreateNewDocumentMap.Enabled = false;
             this.CreateNewDocumentMap.Location = new System.Drawing.Point(0, 74);
             this.CreateNewDocumentMap.Name = "CreateNewDocumentMap";
             this.CreateNewDocumentMap.Size = new System.Drawing.Size(157, 32);
@@ -111,7 +112,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(485, 278);
+            this.ClientSize = new System.Drawing.Size(267, 127);
             this.Controls.Add(this.groupBox1);
             this.Name = "NewDocumentMapperWindow";
             this.Text = "NewDocumentMapperWindow";

@@ -31,6 +31,16 @@ namespace DocumentMapper.Word.AddIn
             return ApplicationVariables.GetVariable(ApplicationVariables.DocumentMapFilePath);
         }
 
+        internal static void LinkDocumentMap(string path)
+        {
+            var newMap = new DocumentMap(Globals.ThisAddIn.Application.ActiveWindow.Document.Path);
+            Utils.SaveDocumentMap(newMap, path);
+
+            Globals.ThisAddIn.Application.ActiveDocument.Variables.Add(ApplicationVariables.DocumentMapFilePath, path);
+            Globals.ThisAddIn.Application.ActiveDocument.Save();
+            Globals.ThisAddIn.InitializeDocumentMapper();
+        }
+
         public static bool ActiveDocumentLinkedToDocumentMap()
         {
             return String.IsNullOrEmpty(ApplicationVariables.GetVariable(ApplicationVariables.DocumentMapFilePath)) ? false : true;

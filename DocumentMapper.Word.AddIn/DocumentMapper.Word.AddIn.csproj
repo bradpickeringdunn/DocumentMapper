@@ -175,6 +175,15 @@
     <Compile Include="DocumentMapperRibbon.Designer.cs">
       <DependentUpon>DocumentMapperRibbon.cs</DependentUpon>
     </Compile>
+    <Compile Include="EditMappedItemWindow.xaml.cs">
+      <DependentUpon>EditMappedItemWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LinkToDocumentMapperWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LinkToDocumentMapperWindow.Designer.cs">
+      <DependentUpon>LinkToDocumentMapperWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="NewDocumentMapperWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -190,9 +199,13 @@
     <Compile Include="TaskPaneContainer.Designer.cs">
       <DependentUpon>TaskPaneContainer.cs</DependentUpon>
     </Compile>
+    <Compile Include="TreeViewController.cs" />
     <Compile Include="Utils.cs" />
     <EmbeddedResource Include="DocumentMapperRibbon.resx">
       <DependentUpon>DocumentMapperRibbon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LinkToDocumentMapperWindow.resx">
+      <DependentUpon>LinkToDocumentMapperWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NewDocumentMapperWindow.resx">
       <DependentUpon>NewDocumentMapperWindow.cs</DependentUpon>
@@ -233,6 +246,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="DocumentMaperTaskPane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditMappedItemWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

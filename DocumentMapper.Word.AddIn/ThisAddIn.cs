@@ -12,12 +12,12 @@ namespace DocumentMapper.Word.AddIn
 {
     public partial class ThisAddIn
     {
-        private DocumentMaperTaskPane documentMaperTaskPane;
+
         private Microsoft.Office.Tools.CustomTaskPane myCustomTaskPane;
         
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            this.Application.DocumentOpen += new ApplicationEvents4_DocumentOpenEventHandler(OnDocumentOpe);
+            this.Application.DocumentOpen += new ApplicationEvents4_DocumentOpenEventHandler(OnDocumentOpen);
             this.Application.DocumentBeforeSave += new ApplicationEvents4_DocumentBeforeSaveEventHandler(DocumentBeforeSave);
            
         }
@@ -49,7 +49,10 @@ namespace DocumentMapper.Word.AddIn
         {
             ShowDocumentMapperRibbon();
             CreateTaskPane();
-            DocumentMapping.MapDocumentControlToMappedItem().Await();
+            if (Utils.ActiveDocumentLinkedToDocumentMap())
+            {
+                DocumentMapping.MapDocumentControlToMappedItem().Await();
+            }
         }
 
         private void ShowDocumentMapperRibbon()
@@ -68,7 +71,7 @@ namespace DocumentMapper.Word.AddIn
             }
         }
 
-        private void OnDocumentOpe(Microsoft.Office.Interop.Word.Document Doc)
+        private void OnDocumentOpen(Microsoft.Office.Interop.Word.Document Doc)
         {
             InitializeDocumentMapper();
         }
