@@ -200,6 +200,7 @@
       <DependentUpon>TaskPaneContainer.cs</DependentUpon>
     </Compile>
     <Compile Include="TreeViewController.cs" />
+    <Compile Include="TreeViewExtensions.cs" />
     <Compile Include="Utils.cs" />
     <EmbeddedResource Include="DocumentMapperRibbon.resx">
       <DependentUpon>DocumentMapperRibbon.cs</DependentUpon>

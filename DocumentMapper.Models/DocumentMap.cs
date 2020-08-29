@@ -47,6 +47,7 @@ namespace DocumentMapper.Models
 
         public void AddMappedItem(MappedItem mappedItem)
         {
+            mappedItem.Name = mappedItem.Name.Trim();
             if (!MappedItemDictionary.ContainsKey(mappedItem.Id.ToString()))
             {
                 if (mappedItem.ParentMappedItemId.HasValue)

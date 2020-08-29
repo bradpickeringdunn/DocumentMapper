@@ -8,7 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800"
              Loaded="UserControl_Loaded">
     <Grid x:Name="DocumentMap">
-        <Button x:Name="AddNewMapping" Content="Quick Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" Margin="10,10,0,0" Click="Button_Click" IsEnabled="False"/>
+        <Button x:Name="AddNewMapping" Content="Quick Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" Margin="10,10,0,0" Click="Button_Click"/>
         <TreeView x:Name="DocumentMapTreeView" Margin="0,72,37,164">
             <TreeViewItem>
                 <StackPanel Height="32" Margin="0,9,0,-25" VerticalAlignment="Top" Width="100" Orientation="Horizontal">

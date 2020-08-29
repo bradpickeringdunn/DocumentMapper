@@ -5,49 +5,69 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
+using controls = System.Windows.Controls;
 using System.Windows.Forms;
 
 namespace DocumentMapper.Word.AddIn
 {
     public static class TreeViewController
     {
-        public async static Task<List<System.Windows.Controls.TreeViewItem>> CreateTreeViewItems(IList<MappedItem> mappedItems)
+        public async static Task CreateTreeViewItems(controls.ItemCollection itemCollection, IList<MappedItem> mappedItems, Action<object, RoutedEventArgs> addItemClick)
         {
-            List<TreeViewItem> treeViewItems = new List<TreeViewItem>();
+            itemCollection.Clear();
             foreach (var item in mappedItems)
             {
-                var treeItem = CreateTreeViewItem(item);
-                treeViewItems.Add(treeItem);
+                var treeViewItem = new controls.TreeViewItem()
+                {
+                    Tag = item.Id,
+                };
+
+                var button = new controls.Button()
+                {
+                    Content = "Add",
+                    Visibility = System.Windows.Visibility.Visible,
+                    Tag = item.Id.ToString(),
+                    Height = 10,
+                    Margin = new System.Windows.Thickness(10, 0, 0, 0)
+                };
+
+                button.Click += new System.Windows.RoutedEventHandler(addItemClick);
+
+                var sp = new controls.StackPanel();
+                sp.Orientation = System.Windows.Controls.Orientation.Horizontal;
+                sp.Children.Add(new System.Windows.Controls.Label() { Content = item.Name });
+                sp.Children.Add(button);
+
+                treeViewItem.Header = sp;
+
+                if (item.ChildMappedItems.Any())
+                {
+                    await CreateTreeViewItems(treeViewItem.Items, item.ChildMappedItems, addItemClick);
+                }
+
+                itemCollection.Add(treeViewItem);
             }
 
-            return await Task.FromResult(treeViewItems);
         }
 
-        public static TreeViewItem CreateTreeViewItem(MappedItem mappedItem, Action<object, RoutedEventArgs> selectedTreeViewItem = null, Action<object, DependencyPropertyChangedEventArgs> treeViewItemFocusChanged = null)
+        public async static Task CreateTreeViewItems(controls.ItemCollection itemCollection, IList<MappedItem> mappedItems)
         {
-            var treeItem = new TreeViewItem()
+            foreach (var item in mappedItems)
             {
-                Tag = mappedItem.Id.ToString(),
-                Header = mappedItem.Name
-            };
+                var treeViewItem = new controls.TreeViewItem()
+                {
+                    Header = item.Name,
+                    Tag = item.Id,
+                };
+                
+                if (item.ChildMappedItems.Any())
+                {
+                    await CreateTreeViewItems(treeViewItem.Items, item.ChildMappedItems);
+                }
 
-            if (selectedTreeViewItem != null)
-            {
-                treeItem.Selected += new RoutedEventHandler(selectedTreeViewItem);
+                itemCollection.Add(treeViewItem);
             }
 
-            if (treeViewItemFocusChanged != null)
-            {
-                treeItem.FocusableChanged += new DependencyPropertyChangedEventHandler(treeViewItemFocusChanged);
-            }
-
-            if (mappedItem.ChildMappedItems.Any())
-            {
-                CreateTreeViewItem(mappedItem, selectedTreeViewItem, treeViewItemFocusChanged);
-            }
-
-            return treeItem;
         }
 
     }
