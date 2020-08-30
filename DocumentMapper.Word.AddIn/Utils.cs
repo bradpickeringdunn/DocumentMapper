@@ -77,9 +77,9 @@ namespace DocumentMapper.Word.AddIn
 
     
 
-        internal static void SaveDocumentMap(DocumentMap documentMap, string FilePath)
+        internal static void SaveDocumentMap(DocumentMap documentMap, string FilePath = null)
         {
-
+            FilePath = FilePath ?? DocumentMapperFilelocation();
             var writer = new XmlSerializer(typeof(DocumentMap));
 
             if (String.IsNullOrEmpty(DocumentMapperFilelocation()))

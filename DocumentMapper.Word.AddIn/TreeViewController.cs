@@ -2,11 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using controls = System.Windows.Controls;
-using System.Windows.Forms;
 
 namespace DocumentMapper.Word.AddIn
 {
@@ -25,18 +23,19 @@ namespace DocumentMapper.Word.AddIn
                 var button = new controls.Button()
                 {
                     Content = "Add",
-                    Visibility = System.Windows.Visibility.Visible,
                     Tag = item.Id.ToString(),
-                    Height = 10,
+                    Height = 14,
                     Margin = new System.Windows.Thickness(10, 0, 0, 0)
                 };
 
                 button.Click += new System.Windows.RoutedEventHandler(addItemClick);
 
                 var sp = new controls.StackPanel();
+                sp.Height = 20;
                 sp.Orientation = System.Windows.Controls.Orientation.Horizontal;
                 sp.Children.Add(new System.Windows.Controls.Label() { Content = item.Name });
                 sp.Children.Add(button);
+                sp.Children[1].Visibility = Visibility.Hidden;
 
                 treeViewItem.Header = sp;
 
@@ -50,7 +49,7 @@ namespace DocumentMapper.Word.AddIn
 
         }
 
-        public async static Task CreateTreeViewItems(controls.ItemCollection itemCollection, IList<MappedItem> mappedItems)
+        public async static Task CreateTreeViewItems(controls.ItemCollection itemCollection, IList<MappedItem> mappedItems, string selectedTreeItemId = null)
         {
             foreach (var item in mappedItems)
             {
@@ -58,6 +57,7 @@ namespace DocumentMapper.Word.AddIn
                 {
                     Header = item.Name,
                     Tag = item.Id,
+                    IsSelected = string.IsNullOrEmpty(selectedTreeItemId) && selectedTreeItemId == item.Id.ToString() ? true : false
                 };
                 
                 if (item.ChildMappedItems.Any())

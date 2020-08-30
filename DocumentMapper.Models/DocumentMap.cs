@@ -27,7 +27,20 @@ namespace DocumentMapper.Models
                 {
                     foreach(var item in MappedItems)
                     {
-                        _mappedItemDictionary.Add(item.Id.ToString(), item);
+                        if (!_mappedItemDictionary.ContainsKey(item.Id.ToString()))
+                        {
+                            _mappedItemDictionary.Add(item.Id.ToString(), item);
+                        }
+
+                        var childItems = item.FlattenChildItems(item);
+
+                        foreach(var childItem in childItems)
+                        {
+                            if (!_mappedItemDictionary.ContainsKey(childItem.Id.ToString()))
+                            {
+                                _mappedItemDictionary.Add(childItem.Id.ToString(), childItem);
+                            }
+                        }
                     }
                 }
 

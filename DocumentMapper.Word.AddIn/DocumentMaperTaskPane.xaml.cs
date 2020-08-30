@@ -13,15 +13,21 @@ namespace DocumentMapper.Word.AddIn
     /// </summary>
     public partial class DocumentMaperTaskPane : System.Windows.Controls.UserControl
     {
+        TreeViewItem _SelectedTreeViewItem;
+        MappedItem _SelectedMappedItem;
+
         public DocumentMaperTaskPane()
         {
             InitializeComponent();
+            DocumentMapTreeView.SelectedItemChanged += new RoutedPropertyChangedEventHandler<object>(TreeViewItemChanged);
+
         }
-        
+
+        #region Methods
+
         private void EnableDisableItemButtons(bool enabled)
         {
-            DeleteMappedItemBtn.IsEnabled = enabled;
-            EditMapping.IsEnabled = enabled;
+            EditMappingBtn.IsEnabled = enabled;
             AddNewMapping.IsEnabled = enabled;
         }
 
@@ -67,21 +73,41 @@ namespace DocumentMapper.Word.AddIn
             }
         }
 
+        #endregion
+
         #region Events
 
         #region Treeview 
 
+        private void TreeViewItemSelected(TreeViewItem selectedTreeViewItem)
+        {
+            _SelectedTreeViewItem = selectedTreeViewItem;
+            _SelectedMappedItem = DocumentMapping.Current.MappedItemDictionary[_SelectedTreeViewItem.Tag.ToString()];
+
+            MappedItemNotesTex.Text = _SelectedMappedItem.Notes;
+
+            var sp = (StackPanel)_SelectedTreeViewItem.Header;
+            sp.Children[1].Visibility = Visibility.Visible;
+            EditMappingBtn.Visibility = Visibility.Visible;
+        }
+
+        public void TreeViewItemChanged<T>(object sender, RoutedPropertyChangedEventArgs<T> e)
+        {
+            var treeView= (TreeView)sender;
+            if(_SelectedTreeViewItem != null)
+            {
+                var header = (StackPanel)_SelectedTreeViewItem.Header;
+                header.Children[1].Visibility = Visibility.Hidden;
+            }
+
+            TreeViewItemSelected((TreeViewItem)treeView.SelectedItem);
+            
+        }
+
         public void SelectedTreeViewItem(object sender, RoutedEventArgs e)
         {
-            if(sender is TreeViewItem)
-            {
-                var treeViewItem = (TreeViewItem)sender;
-                EnableDisableItemButtons(true);
-                var mapedItem = DocumentMapping.Current.MappedItemDictionary[treeViewItem.Tag.ToString()];
-
-                MappedItemNotesTex.Text = mapedItem.Notes;
-
-            }
+            TreeViewItemSelected((TreeViewItem)sender);
+            EnableDisableItemButtons(true);
         }
 
         public void TreeViewItemFocusChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -137,7 +163,7 @@ namespace DocumentMapper.Word.AddIn
                 CreateMapedItemTextControl(mappedItem);
                 AddItemToTree(mappedItem, treeItem);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -149,7 +175,7 @@ namespace DocumentMapper.Word.AddIn
             {
                 var selectedItem = (TreeViewItem)DocumentMapTreeView.SelectedItem;
                 var mappedItem = DocumentMapping.Current.MappedItemDictionary[selectedItem.Tag.ToString()];
-                var editItemmappingWindow = new EditMappedItemWindow(ref DocumentMapTreeView, mappedItem.Name, selectedItem);
+                var editItemmappingWindow = new EditMappedItemWindow(mappedItem.Name, selectedItem);
                 editItemmappingWindow.Show();
             }
             EnableDisableItemButtons(false);
@@ -160,11 +186,13 @@ namespace DocumentMapper.Word.AddIn
             if (sender is Button)
             {
                 var button = (Button)sender;
-                button.Visibility = Visibility.Hidden;
-
+      
                 var mappedItem = DocumentMapping.Current.MappedItemDictionary[button.Tag.ToString()];
 
                 CreateMapedItemTextControl(mappedItem);
+
+                var parent = (StackPanel)button.Parent;
+
             }
         }
 
@@ -193,17 +221,12 @@ namespace DocumentMapper.Word.AddIn
         {
             EditMappedItemWindow window;
             var currentSelection = Globals.ThisAddIn.Application.Selection;
+            var selectedText = currentSelection != null ? currentSelection.Text : string.Empty;
             var selectedItem = (TreeViewItem)DocumentMapTreeView.SelectedItem;
             
-            if (currentSelection == null && string.IsNullOrEmpty(currentSelection.Text))
-            {
-                throw new Exception();
-            }
-            else 
-            {
-                window = new EditMappedItemWindow(ref DocumentMapTreeView, currentSelection.Text, selectedItem);
-            }
+            window = new EditMappedItemWindow(selectedText, selectedItem);
             window.Closed += new EventHandler(XYZ);
+            
             window.Show();
         }
 

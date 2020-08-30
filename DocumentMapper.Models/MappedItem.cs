@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -47,25 +48,24 @@ namespace DocumentMapper.Models
         
         public bool IsRootItem { get; set; }
                
-        public Dictionary<Guid, MappedItem> GetChildMappedItems(List<MappedItem> ChildMappedItems)
+        public IList<MappedItem> FlattenChildItems(MappedItem item)
         {
-            var childMappedItems = new Dictionary<Guid, MappedItem>();
-
-            foreach (var child in ChildMappedItems)
+            if(item == null)
             {
-                if (!childMappedItems.ContainsKey(child.Id))
-                {
-                    childMappedItems.Add(child.Id, child);
-                }
+                FlattenChildItems(this);
+            }
 
+            var childMappedItems = new List<MappedItem>();
+
+            foreach (var child in item.ChildMappedItems)
+            {
+                childMappedItems.Add(child);
+                
                 if (child.ChildMappedItems.Any())
                 {
-                    foreach(var c in GetChildMappedItems(child.ChildMappedItems))
+                    foreach(var childItem in child.ChildMappedItems)
                     {
-                        if (!childMappedItems.ContainsKey(c.Key))
-                        {
-                            childMappedItems.Add(c.Key, c.Value);
-                        }
+                        childMappedItems.AddRange(FlattenChildItems(childItem));
                     }
                 }
             }

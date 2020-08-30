@@ -66,7 +66,7 @@ namespace DocumentMapper.Word.AddIn
                     }
                 });
             }
-            catch(Exception ex)
+            catch(Exception)
             {
 
             }
