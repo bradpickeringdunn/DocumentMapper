@@ -23,6 +23,7 @@ namespace DocumentMapper.Word.AddIn
             try
             {
                 Utils.LinkDocumentMap(DocumentMapPathTxt.Text);
+                this.Close();
             }
             catch (System.Runtime.InteropServices.COMException)
             {
@@ -36,7 +37,7 @@ namespace DocumentMapper.Word.AddIn
             if (OpenDocumentMapFile.ShowDialog() == DialogResult.OK)
             {
                 LinkNewDocumentMapBtn.Enabled = true;
-                DocumentMapPathTxt.Text = File.ReadAllText(OpenDocumentMapFile.FileName);
+                DocumentMapPathTxt.Text = OpenDocumentMapFile.FileName;
             }
         }
     }

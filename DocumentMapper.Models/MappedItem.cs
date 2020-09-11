@@ -84,15 +84,19 @@ namespace DocumentMapper.Models
 
         private List<MappedItem> _childMappedItems = new List<MappedItem>();
 
-        public void AddChildMappedItem(MappedItem newMappedItem, ref DocumentMap documentmap)
+        public void AddChildMappedItem(MappedItem mappedItem, int? position = null)
         {
-            if(this.Name == newMappedItem.Name)
+            if(this.Name == mappedItem.Name)
             {
                 //Error message
             }
 
-            newMappedItem.Position = _childMappedItems.Count > 0 ? _childMappedItems.Count + 1 : 0;
-            _childMappedItems.Add(newMappedItem);
+            if (position.HasValue)
+            {
+
+            }
+            mappedItem.ParentMappedItemId = this.Id;
+            _childMappedItems.Add(mappedItem);
         }
 
         public string ThisMappedItemToXMLString()
@@ -125,5 +129,6 @@ namespace DocumentMapper.Models
             }
             
         }
+
     }
 }

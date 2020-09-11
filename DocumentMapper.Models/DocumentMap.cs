@@ -153,5 +153,15 @@ namespace DocumentMapper.Models
 
             await Task.FromResult(MappedItemDictionary.Remove(mappedItemId));
         }
+
+        public void ChangeParentItem(MappedItem childItem, MappedItem parentitem)
+        {
+            if(MappedItemDictionary.ContainsKey(childItem.ParentMappedItemId.ToString()))
+            {
+                var CurrentParent = this.MappedItemDictionary[childItem.ParentMappedItemId.ToString()];
+                CurrentParent.ChildMappedItems.Remove(childItem);
+            }
+            parentitem.AddChildMappedItem(childItem);
+        }
     }
 }

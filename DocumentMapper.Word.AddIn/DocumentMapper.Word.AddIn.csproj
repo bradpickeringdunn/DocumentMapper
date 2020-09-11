@@ -175,8 +175,11 @@
     <Compile Include="DocumentMapperRibbon.Designer.cs">
       <DependentUpon>DocumentMapperRibbon.cs</DependentUpon>
     </Compile>
-    <Compile Include="EditMappedItemWindow.xaml.cs">
-      <DependentUpon>EditMappedItemWindow.xaml</DependentUpon>
+    <Compile Include="AddMappedItemWindow.xaml.cs">
+      <DependentUpon>AddMappedItemWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditMappedItemsControl.xaml.cs">
+      <DependentUpon>EditMappedItemsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="LinkToDocumentMapperWindow.cs">
       <SubType>Form</SubType>
@@ -250,7 +253,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EditMappedItemWindow.xaml">
+    <Page Include="AddMappedItemWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditMappedItemsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

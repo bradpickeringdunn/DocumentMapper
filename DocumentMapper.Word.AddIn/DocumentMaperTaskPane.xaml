@@ -12,7 +12,8 @@
         <TreeView x:Name="DocumentMapTreeView" Margin="0,72,37,164">
             
         </TreeView>
-        <Button x:Name="EditMappingBtn" Content="Edit Mappings" HorizontalAlignment="Left" Margin="106,10,0,0" VerticalAlignment="Top" Width="80" Click="EditMappedTreeViewItem_Click" IsEnabled="False"/>
+        
+        <Button x:Name="EditMappedItemsBtn" Content="Edit Mappings" HorizontalAlignment="Left" Margin="106,10,0,0" VerticalAlignment="Top" Width="80" Click="EditMappedTreeViewItem_Click"/>
         <TextBlock x:Name="MappedItemNotesTex" HorizontalAlignment="Left" Height="140" Margin="0,334,0,-24" TextWrapping="Wrap" VerticalAlignment="Top" Width="763"/>
         <Label Content="Notes:" HorizontalAlignment="Left" Height="22" Margin="0,307,0,0" VerticalAlignment="Top" Width="86"/>
         <Button x:Name="AddMappingBtn" Content="Add Item" HorizontalAlignment="Left" Height="20" Margin="10,44,0,0" VerticalAlignment="Top" Width="76" Click="AddMappingBtn_Click"/>

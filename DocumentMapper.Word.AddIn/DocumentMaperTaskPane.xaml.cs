@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using DocumentMapper.Models;
+using Microsoft.Office.Interop.Word;
 
 namespace DocumentMapper.Word.AddIn
 {
@@ -25,31 +26,49 @@ namespace DocumentMapper.Word.AddIn
 
         #region Methods
 
-        private void EnableDisableItemButtons(bool enabled)
-        {
-            EditMappingBtn.IsEnabled = enabled;
-            AddNewMapping.IsEnabled = enabled;
-        }
-
         private void UserControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {                        
             PopulateTreeView().Await();
         }
 
-        private async Task PopulateTreeView()
+        private async System.Threading.Tasks.Task PopulateTreeView()
         {
             await TreeViewController.CreateTreeViewItems(DocumentMapTreeView.Items, DocumentMapping.Current.MappedItems, MappedTreeViewItem_Click);
         }
-               
+
+        private static void CreateMapedItemRangeControl(MappedItem mappedItem)
+        {
+            try
+            {
+                var range = Globals.ThisAddIn.Application.ActiveDocument.Range(0, 0);
+                
+                var vstoDocument = Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application.ActiveDocument);
+                range.Text = mappedItem.Name;
+                
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        
         private static void CreateMapedItemTextControl(MappedItem mappedItem)
         {
-            Microsoft.Office.Tools.Word.PlainTextContentControl textControl;
-            var vstoDocument = Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application.ActiveDocument);
-            textControl = vstoDocument.Controls.AddPlainTextContentControl(mappedItem.Name);
-            //textControl.DataBindings.Add("Text", mappedItem, "Name");
-            textControl.Text = mappedItem.Name;
-            textControl.LockContents = true;
-            textControl.Tag = mappedItem.Id.ToString();
+            try
+            {
+                Microsoft.Office.Tools.Word.PlainTextContentControl textControl;
+
+                var vstoDocument = Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application.ActiveDocument);
+                textControl = vstoDocument.Controls.AddPlainTextContentControl(mappedItem.Name);
+                //textControl.DataBindings.Add("Text", mappedItem, "Name");
+                textControl.Text = mappedItem.Name;
+                textControl.LockContents = true;
+                textControl.Tag = mappedItem.Id.ToString();
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
 
         private void AddItemToTree(MappedItem mappedItem, TreeViewItem treeItem = null)
@@ -88,7 +107,7 @@ namespace DocumentMapper.Word.AddIn
 
             var sp = (StackPanel)_SelectedTreeViewItem.Header;
             sp.Children[1].Visibility = Visibility.Visible;
-            EditMappingBtn.Visibility = Visibility.Visible;
+            EditMappedItemsBtn.Visibility = Visibility.Visible;
         }
 
         public void TreeViewItemChanged<T>(object sender, RoutedPropertyChangedEventArgs<T> e)
@@ -102,12 +121,6 @@ namespace DocumentMapper.Word.AddIn
 
             TreeViewItemSelected((TreeViewItem)treeView.SelectedItem);
             
-        }
-
-        public void SelectedTreeViewItem(object sender, RoutedEventArgs e)
-        {
-            TreeViewItemSelected((TreeViewItem)sender);
-            EnableDisableItemButtons(true);
         }
 
         public void TreeViewItemFocusChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -160,7 +173,7 @@ namespace DocumentMapper.Word.AddIn
                 }
 
                 DocumentMapping.Current.AddMappedItem(mappedItem);
-                CreateMapedItemTextControl(mappedItem);
+                CreateMapedItemRangeControl(mappedItem);
                 AddItemToTree(mappedItem, treeItem);
             }
             catch (Exception)
@@ -171,14 +184,8 @@ namespace DocumentMapper.Word.AddIn
 
         private void EditMappedTreeViewItem_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (DocumentMapTreeView.SelectedItem != null)
-            {
-                var selectedItem = (TreeViewItem)DocumentMapTreeView.SelectedItem;
-                var mappedItem = DocumentMapping.Current.MappedItemDictionary[selectedItem.Tag.ToString()];
-                var editItemmappingWindow = new EditMappedItemWindow(mappedItem.Name, selectedItem);
-                editItemmappingWindow.Show();
-            }
-            EnableDisableItemButtons(false);
+            var editItemsWindow = new EditMappedItemsControl();
+            editItemsWindow.Show();
         }
         
     private void MappedTreeViewItem_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -194,27 +201,6 @@ namespace DocumentMapper.Word.AddIn
                 var parent = (StackPanel)button.Parent;
 
             }
-        }
-
-        private void DeleteMappedTreeViewItem_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            if (DocumentMapTreeView.SelectedItem is TreeViewItem)
-            {
-                var selectedItem = (TreeViewItem)DocumentMapTreeView.SelectedItem;
-
-                if (selectedItem.Items.Count == 0)
-                {
-                    DocumentMapping.RemoveMappedControls(selectedItem.Tag.ToString()).Await();
-                    DocumentMapping.Current.DeleteMappedItem(selectedItem.Tag.ToString()).Await();
-                    DocumentMapTreeView.Items.Remove(selectedItem);
-                }
-                else
-                {
-
-                }
-            }
-
-            EnableDisableItemButtons(false);
         }
 
         private void AddMappingBtn_Click(object sender, RoutedEventArgs e)

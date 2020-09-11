@@ -33,9 +33,6 @@ namespace DocumentMapper.Word.AddIn
 
         internal static void LinkDocumentMap(string path)
         {
-            var newMap = new DocumentMap(Globals.ThisAddIn.Application.ActiveWindow.Document.Path);
-            Utils.SaveDocumentMap(newMap, path);
-
             Globals.ThisAddIn.Application.ActiveDocument.Variables.Add(ApplicationVariables.DocumentMapFilePath, path);
             Globals.ThisAddIn.Application.ActiveDocument.Save();
             Globals.ThisAddIn.InitializeDocumentMapper();
