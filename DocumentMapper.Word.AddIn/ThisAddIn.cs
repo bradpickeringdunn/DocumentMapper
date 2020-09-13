@@ -51,7 +51,7 @@ namespace DocumentMapper.Word.AddIn
             CreateTaskPane();
             if (Utils.ActiveDocumentLinkedToDocumentMap())
             {
-                DocumentMapping.MapDocumentControlToMappedItem().Await();
+                //DocumentMapping.MapDocumentControlToMappedItem().Await();
             }
         }
 

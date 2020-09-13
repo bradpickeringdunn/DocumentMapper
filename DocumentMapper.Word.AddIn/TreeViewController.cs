@@ -12,7 +12,6 @@ namespace DocumentMapper.Word.AddIn
     {
         public async static Task CreateTreeViewItems(controls.ItemCollection itemCollection, IList<MappedItem> mappedItems, Action<object, RoutedEventArgs> addItemClick)
         {
-            itemCollection.Clear();
             foreach (var item in mappedItems)
             {
                 var treeViewItem = new controls.TreeViewItem()

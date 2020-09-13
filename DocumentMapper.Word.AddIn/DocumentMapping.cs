@@ -4,12 +4,63 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
 using SysTasks = System.Threading.Tasks;
 
 namespace DocumentMapper.Word.AddIn
 {
     internal static class DocumentMapping
     {
+        public static MappedItem AddMappedItem(string itemname, MappedItem parentMappedItem = null)
+        {
+            MappedItem mappedItem = default(MappedItem);
+
+            var caption = "Add to document map";
+            itemname = itemname.Trim();
+            if (itemname.Length == 0)
+            {
+                MessageBox.Show("Cant add spaces to document map", caption, MessageBoxButton.OK);
+                itemname = string.Empty;
+            }
+
+            if (itemname.Length < 3)
+            {
+                var message = new StringBuilder("Are you sure you want to add,");
+                message.AppendLine(itemname);
+                if (MessageBox.Show(message.ToString(), caption, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                {
+                    itemname = string.Empty;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(itemname))
+            {
+                try
+                {
+                    if (parentMappedItem == null)
+                    {
+                        mappedItem = new MappedItem(itemname, DocumentMapping.Current);
+                    }
+                    else
+                    {
+                        mappedItem = new MappedItem(itemname, DocumentMapping.Current, parentMappedItem);
+                    }
+
+                    DocumentMapping.Current.AddMappedItem(mappedItem);
+
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+
+            return mappedItem;
+        }
+
         public static DocumentMap Current
         {
             get
