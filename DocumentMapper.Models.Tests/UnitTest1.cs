@@ -1,3 +1,4 @@
+using DocumentMapper.Models.AuthorsAid;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Windows.Controls;
@@ -10,8 +11,9 @@ namespace DocumentMapper.Models.Tests
         [TestMethod]
         public void TestMethod1()
         {
-            
 
+            var book = new Book("Working Title");
+            book.AddChapter(new Chapter());
             
 
 

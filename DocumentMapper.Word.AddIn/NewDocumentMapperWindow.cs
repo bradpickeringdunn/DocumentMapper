@@ -29,6 +29,7 @@ namespace DocumentMapper.Word.AddIn
             }
             else {
                 var path = $"{FilePathTxt.Text}/{DocumentMapFilenameTxt.Text}.xml";
+                Utils.SaveDocumentMap(new DocumentMap(), path);
                 Utils.LinkDocumentMap(path);
 
                 this.Hide();

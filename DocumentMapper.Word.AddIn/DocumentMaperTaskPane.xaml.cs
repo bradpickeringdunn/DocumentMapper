@@ -22,7 +22,6 @@ namespace DocumentMapper.Word.AddIn
         {
             InitializeComponent();
             DocumentMapTreeView.SelectedItemChanged += new RoutedPropertyChangedEventHandler<object>(TreeViewItemChanged);
-
         }
 
         #region Methods
@@ -61,18 +60,15 @@ namespace DocumentMapper.Word.AddIn
             {
                 var selectedText = Globals.ThisAddIn.Application.Selection;
                 selectedText.InsertBefore($"{mappedItem.Name} ");
-                //Microsoft.Office.Tools.Word.PlainTextContentControl textControl;
-
-                //var vstoDocument = Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application.ActiveDocument);
-
-
-                //textControl = vstoDocument.Controls.AddPlainTextContentControl(mappedItem.Name);
-
-
-                //textControl.DataBindings.Add("Text", mappedItem, "Name");
-                //textControl.Text = mappedItem.Name;
-                //textControl.LockContents = true;
-                //textControl.Tag = mappedItem.Id.ToString();
+                Microsoft.Office.Tools.Word.PlainTextContentControl textControl;
+                
+                var vstoDocument = Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application.ActiveDocument);
+                textControl = vstoDocument.Controls.AddPlainTextContentControl(mappedItem.Name);
+                textControl.Text = mappedItem.Name;
+                textControl.LockContents = true;
+                textControl.Title = string.Empty;
+                textControl.Tag = mappedItem.Id.ToString();
+                
             }
             catch (Exception ex)
             {
@@ -134,6 +130,11 @@ namespace DocumentMapper.Word.AddIn
 
         #region Clicks
 
+        private void RefreashBtn_Click(object sender, RoutedEventArgs e)
+        {
+            PopulateTreeView().Await();
+        }
+
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             var selectedText = Globals.ThisAddIn.Application.Selection;
@@ -160,20 +161,20 @@ namespace DocumentMapper.Word.AddIn
                 controls.ItemCollection itemCollection = treeItem != null ? treeItem.Items : DocumentMapTreeView.Items;
                 TreeViewController.CreateTreeViewItems(itemCollection, new List<MappedItem> { mappedItem }, MappedTreeViewItem_Click).Await();
             }
-        }       
+        }
 
         private void EditMappedTreeViewItem_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             var editItemsWindow = new EditMappedItemsControl();
             editItemsWindow.Show();
         }
-        
-    private void MappedTreeViewItem_Click(object sender, System.Windows.RoutedEventArgs e)
+
+        private void MappedTreeViewItem_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             if (sender is Button)
             {
                 var button = (Button)sender;
-      
+
                 var mappedItem = DocumentMapping.Current.MappedItemDictionary[button.Tag.ToString()];
 
                 CreateMapedItemTextControl(mappedItem);
@@ -190,20 +191,20 @@ namespace DocumentMapper.Word.AddIn
             var currentSelection = Globals.ThisAddIn.Application.Selection;
             var selectedText = currentSelection != null ? currentSelection.Text : string.Empty;
             var selectedItem = (TreeViewItem)DocumentMapTreeView.SelectedItem;
-            
+
             window = new EditMappedItemWindow(selectedText, selectedItem);
             window.Closed += new EventHandler(XYZ);
-            
+
             window.Show();
         }
 
-        
+
         public void XYZ(object obj, EventArgs e)
         {
             PopulateTreeView().Await();
         }
-        #endregion
 
+        #endregion
 
     }
 }

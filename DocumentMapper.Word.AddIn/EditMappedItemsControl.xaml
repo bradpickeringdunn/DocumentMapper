@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Button x:Name="AddMappedItemtn" Content="Update Item" HorizontalAlignment="Left" Height="27" Margin="351,53,0,0" VerticalAlignment="Top" Width="109" Click="AddMappedItemtn_Click"/>
+        <Button x:Name="AddMappedItemtn" Content="Add new item" HorizontalAlignment="Left" Height="27" Margin="351,53,0,0" VerticalAlignment="Top" Width="109" Click="AddMappedItemtn_Click"/>
         <TextBox x:Name="MappedItemText" HorizontalAlignment="Left" Height="27" Margin="155,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="178"/>
         <Label Content="Notes:" HorizontalAlignment="Left" Height="27" Margin="458,128,0,0" VerticalAlignment="Top" Width="87"/>
 
@@ -40,6 +40,8 @@
         <CheckBox x:Name="LinkUnmappedItemsChk" Content="Link UnMapped Items" HorizontalAlignment="Left" Height="22" Margin="155,101,0,0" VerticalAlignment="Top" Width="114"/>
         <Button x:Name="SaveAndCloseBtn" Content="Save &amp; Close" HorizontalAlignment="Left" Height="27" Margin="592,16,0,0" VerticalAlignment="Top" Width="109" Click="SaveAndCloseBtn_Click"/>
         <Button x:Name="CancelBtn" Content="Cancel" HorizontalAlignment="Left" Height="27" Margin="592,54,0,0" VerticalAlignment="Top" Width="109" Click="CancelBtn_Click"/>
+        <Button Content="+" HorizontalAlignment="Left" Height="26" Margin="307,9,0,0" VerticalAlignment="Top" Width="21" RenderTransformOrigin="-0.059,0.412" FontSize="15" FontWeight="Bold" Click="AddNewMappedItemBtn_Click"/>
+        <Button x:Name="UpdateMappedItemtn" Content="Update Item" HorizontalAlignment="Left" Height="27" Margin="351,53,0,0" VerticalAlignment="Top" Width="109" Click="UpdateMappedItemtn_Click" RenderTransformOrigin="0.477,-1.021" Visibility="Hidden"/>
 
     </Grid>
 </Window>

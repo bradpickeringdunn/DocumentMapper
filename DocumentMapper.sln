@@ -7,7 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentMapper.Word.AddIn",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocumentMapper.Models", "DocumentMapper.Models\DocumentMapper.Models.csproj", "{F1A74BB9-4BA5-4602-911E-080B7639B7DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentMapper.Models.Tests", "DocumentMapper.Models.Tests\DocumentMapper.Models.Tests.csproj", "{92EACB02-21D2-4233-9094-7CB651D14DE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocumentMapper.Models.Tests", "DocumentMapper.Models.Tests\DocumentMapper.Models.Tests.csproj", "{92EACB02-21D2-4233-9094-7CB651D14DE2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Custom Controls", "Custom Controls", "{09941D28-0412-4F24-BD65-3B1B69E3C225}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

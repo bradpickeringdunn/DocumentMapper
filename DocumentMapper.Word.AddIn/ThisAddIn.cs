@@ -81,6 +81,7 @@ namespace DocumentMapper.Word.AddIn
             if (Utils.ActiveDocumentLinkedToDocumentMap())
             {
                 var path = Utils.DocumentMapperFilelocation();
+                
                 Utils.SaveDocumentMap(DocumentMapping.Current, path);
             }
         }

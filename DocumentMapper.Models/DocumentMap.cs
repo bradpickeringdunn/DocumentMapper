@@ -12,10 +12,12 @@ namespace DocumentMapper.Models
     {
         public DocumentMap(){}
 
-        public DocumentMap(string linkedDocumentPath)
+        public DocumentMap(string linkedDocumentPath, string title, int position)
         {
             LinkedDocumentPaths = new List<string>() { linkedDocumentPath };
             Id = Guid.NewGuid();
+            this.position = position;
+            Title = title;
         }
 
         [XmlIgnoreAttribute]
@@ -57,6 +59,12 @@ namespace DocumentMapper.Models
 
         [XmlElement("Id")]
         public Guid Id { get; set; }
+
+        [XmlElement("Title")]
+        public string Title { get; set; }
+
+        [XmlElement("position")]
+        public int position { get; set; }
 
         public void AddMappedItem(MappedItem mappedItem)
         {

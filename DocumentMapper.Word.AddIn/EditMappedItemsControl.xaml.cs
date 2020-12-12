@@ -1,18 +1,11 @@
 ﻿using DocumentMapper.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace DocumentMapper.Word.AddIn
 {
@@ -34,12 +27,96 @@ namespace DocumentMapper.Word.AddIn
             MappedItemTreeView.SelectedItemChanged += new RoutedPropertyChangedEventHandler<object>(SelectedTreeViewItem);
         }
 
-        private async Task PopulateTreeView()
-        { 
-            await TreeViewController.CreateTreeViewItems(MappedItemTreeView.Items, DocumentMapping.Current.MappedItems);
+        #region Add Items
+
+        private void AddMappedItemtn_Click(object sender, RoutedEventArgs e)
+        {
+            var newMappedItem = new MappedItem()
+            {
+                Name = MappedItemText.Text,
+                Notes = new TextRange(ItemMapNotesText.Document.ContentStart, ItemMapNotesText.Document.ContentEnd).Text
+            };
+
+            if (_selectedTreeView == null || _selectedTreeView.Header.ToString() == _parentRootLavel)
+            {
+                MappedItemTreeView.Items.Add(CreateTreeViewItem(newMappedItem));
+            }
+            else
+            {
+                newMappedItem.ParentMappedItemId = _selectedMappedItem.Id;
+                _selectedTreeView.Items.Add(CreateTreeViewItem(newMappedItem));
+            }
+
+            DocumentMapping.Current.AddMappedItem(newMappedItem);
+            ChangeSelectedTreeViewItem(_selectedTreeView);
         }
 
+        private TreeViewItem CreateTreeViewItem(MappedItem newMappedItem)
+        {
+            return new TreeViewItem()
+            {
+                Header = newMappedItem.Name,
+                Tag = newMappedItem.Id.ToString()
+            };
+        }
+
+        private void SaveAndCloseBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var path = Utils.DocumentMapperFilelocation();
+            Utils.SaveDocumentMap(DocumentMapping.Current, path);
+            this.Close();
+        }
+
+        private void UpdateMappedItemtn_Click(object sender, RoutedEventArgs e)
+        {
+            _selectedMappedItem.Name = MappedItemText.Text;
+            _selectedTreeView.Header = MappedItemText.Text;
+            _selectedMappedItem.Notes = new TextRange(ItemMapNotesText.Document.ContentStart, ItemMapNotesText.Document.ContentEnd).Text;
+        }
+
+        private void AddNewMappedItemBtn_Click(object sender, RoutedEventArgs e)
+        {
+            AddMappedItemtn.Visibility = Visibility.Visible;
+            UpdateMappedItemtn.Visibility = Visibility.Hidden;
+            MappedItemText.Text = string.Empty;
+        }
+
+        private void SelectedTreeViewItem<T>(object sender, RoutedPropertyChangedEventArgs<T> e)
+        {
+            var treeView = (TreeView)sender;
+            ChangeSelectedTreeViewItem((TreeViewItem)treeView.SelectedItem);
+        }
+
+        private void ChangeSelectedTreeViewItem(TreeViewItem treeViewItem)
+        {
+            _selectedTreeView = treeViewItem;
+            ParentNodesLabel.Content = _selectedTreeView.Header.ToString();
+            if (_selectedTreeView.Tag != null)
+            {
+                _selectedMappedItem = DocumentMapping.Current.MappedItemDictionary[_selectedTreeView.Tag.ToString()];
+                MappedItemText.Text = _selectedMappedItem.Name;
+                AddMappedItemtn.Visibility = Visibility.Hidden;
+                UpdateMappedItemtn.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                AddMappedItemtn.Visibility = Visibility.Visible;
+                UpdateMappedItemtn.Visibility = Visibility.Hidden;
+            }
+        }
+        
+        #endregion
+
         #region Treeview Events
+
+        private async Task PopulateTreeView()
+        {
+            MappedItemTreeView.Items.Add(new TreeViewItem()
+            {
+                Header = "ROOT"
+            });
+            await TreeViewController.CreateTreeViewItems(MappedItemTreeView.Items, DocumentMapping.Current.MappedItems);
+        }
 
         private void TreeViewItemChanged<T>(object sender, RoutedPropertyChangedEventArgs<T> e)
         {
@@ -254,32 +331,7 @@ namespace DocumentMapper.Word.AddIn
         {
             this.Close();
         }
-
-        private void SaveAndCloseBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var path = Utils.DocumentMapperFilelocation();
-            Utils.SaveDocumentMap(DocumentMapping.Current, path);
-        }
-
-        private void AddMappedItemtn_Click(object sender, RoutedEventArgs e)
-        {
-            _selectedMappedItem.Name = MappedItemText.Text;
-            _selectedTreeView.Header = MappedItemText.Text;
-            _selectedMappedItem.Notes = new TextRange(ItemMapNotesText.Document.ContentStart, ItemMapNotesText.Document.ContentEnd).Text;
-        }
-
-        private void SelectedTreeViewItem<T>(object sender, RoutedPropertyChangedEventArgs<T> e)
-        {
-            var treeView = (TreeView)sender;
-            _selectedTreeView = (TreeViewItem)treeView.SelectedItem;
-            if(_selectedTreeView.Tag != null)
-            {
-                _selectedMappedItem = DocumentMapping.Current.MappedItemDictionary[_selectedTreeView.Tag.ToString()];
-                MappedItemText.Text = _selectedMappedItem.Name;
-            }           
-             
-        }
-
+        
         #endregion
 
     }
