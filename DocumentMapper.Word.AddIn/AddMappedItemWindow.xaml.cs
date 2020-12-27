@@ -34,7 +34,7 @@ namespace DocumentMapper.Word.AddIn
                 IsSelected = true
             });
             var selecteMappedItemId = _selectedTreeView != null && _selectedTreeView.Tag !=null ? _selectedTreeView.Tag.ToString() : null;
-            await TreeViewController.CreateTreeViewItems(MappedItemTreeView.Items, DocumentMapping.Current.MappedItems, selecteMappedItemId);
+            //await TreeViewController.CreateTreeViewItems(MappedItemTreeView.Items, DocumentMapping.Current.MappedItems, selecteMappedItemId);
             MappedItemTreeView.SelectedItemChanged += new RoutedPropertyChangedEventHandler<object>(TreeViewItemChanged);
         }
 
@@ -45,18 +45,18 @@ namespace DocumentMapper.Word.AddIn
                 MappedItem newMappedItem = null;
                 if (_selectedMappedItem == null)
                 {
-                    newMappedItem = new MappedItem(MappedItemText.Text, DocumentMapping.Current);
+                   // newMappedItem = new MappedItem(MappedItemText.Text, DocumentMapping.Current);
                 }
                 else
                 {
-                    newMappedItem = new MappedItem(MappedItemText.Text, DocumentMapping.Current, _selectedMappedItem);
+                  //  newMappedItem = new MappedItem(MappedItemText.Text, DocumentMapping.Current, _selectedMappedItem);
                 }
 
                 newMappedItem.Notes = new TextRange(ItemMapNotesText.Document.ContentStart, ItemMapNotesText.Document.ContentEnd).Text;
 
-                DocumentMapping.Current.AddMappedItem(newMappedItem);
+              //  DocumentMapping.Current.AddMappedItem(newMappedItem);
 
-                Utils.SaveDocumentMap(DocumentMapping.Current);
+               // Utils.SaveDocumentMap(DocumentMapping.Current);
 
                 PopulateTreeView().Await();
             }
@@ -81,7 +81,7 @@ namespace DocumentMapper.Word.AddIn
         {
             var treeView = (TreeView)sender;
             _selectedTreeView = (TreeViewItem)treeView.SelectedItem;
-            _selectedMappedItem = _selectedTreeView.Tag != null ? DocumentMapping.Current.MappedItemDictionary[_selectedTreeView.Tag.ToString()] : null;
+           // _selectedMappedItem = _selectedTreeView.Tag != null ? DocumentMapping.Current.MappedItemDictionary[_selectedTreeView.Tag.ToString()] : null;
             ParentNodesLabel.Content = _selectedMappedItem != null ? _selectedMappedItem.Name : _parentRootLavel;
 
             if (_selectedMappedItem != null)

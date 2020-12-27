@@ -1,4 +1,5 @@
 ﻿using DocumentMapper.Models;
+using DocumentMapper.Models.AuthorsAid;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace DocumentMapper.Word.AddIn
             {
                 var documentMap = new DocumentMap();
                 if (!String.IsNullOrEmpty(ApplicationVariables.GetVariable(ApplicationVariables.DocumentMapFilePath))) {
-                    documentMap = LoadDocumentMap();
+                ///    documentMap = LoadBook();
                 }
 
                 return documentMap;
@@ -43,16 +44,16 @@ namespace DocumentMapper.Word.AddIn
             return String.IsNullOrEmpty(ApplicationVariables.GetVariable(ApplicationVariables.DocumentMapFilePath)) ? false : true;
         }
 
-        public static DocumentMap LoadDocumentMap()
+        public static Book LoadBook()
         {
-            var documentMap = new DocumentMap();
+            var book = new Book();
             var serializer = new XmlSerializer(typeof(DocumentMap));
             using (var reader = new StreamReader(Utils.DocumentMapperFilelocation()))
             {
-                documentMap = (DocumentMap)serializer.Deserialize(reader);
+                book = (Book)serializer.Deserialize(reader);
             }
 
-            return documentMap;
+            return book;
         }
 
         internal static void UnLinkDocumentMap()

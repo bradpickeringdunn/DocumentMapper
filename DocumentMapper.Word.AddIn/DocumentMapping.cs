@@ -1,4 +1,5 @@
 ﻿using DocumentMapper.Models;
+using DocumentMapper.Models.AuthorsAid;
 using Microsoft.Office.Interop.Word;
 using System;
 using System.Collections.Generic;
@@ -41,14 +42,14 @@ namespace DocumentMapper.Word.AddIn
                 {
                     if (parentMappedItem == null)
                     {
-                        mappedItem = new MappedItem(itemname, DocumentMapping.Current);
+                      //  mappedItem = new MappedItem(itemname, DocumentMapping.Current);
                     }
                     else
                     {
-                        mappedItem = new MappedItem(itemname, DocumentMapping.Current, parentMappedItem);
+                        //mappedItem = new MappedItem(itemname, DocumentMapping.Current, parentMappedItem);
                     }
 
-                    DocumentMapping.Current.AddMappedItem(mappedItem);
+                   // DocumentMapping.Current.AddMappedItem(mappedItem);
 
                 }
                 catch (Exception ex)
@@ -61,20 +62,20 @@ namespace DocumentMapper.Word.AddIn
             return mappedItem;
         }
 
-        public static DocumentMap Current
+        public static Book CurrentBook
         {
             get
             {
-                if(_currentDocumentMap == null)
+                if (_currentDocumentMap == null)
                 {
-                    _currentDocumentMap = (DocumentMap)Utils.LoadDocumentMap();
+                    _currentDocumentMap = (Book)Utils.LoadBook();
                 }
 
                 return _currentDocumentMap;
             }
         }
 
-        static DocumentMap _currentDocumentMap;
+        static Book _currentDocumentMap;
                 
         private static Dictionary<string, MappedItem> _flattenedMappeditems = new Dictionary<string, MappedItem>();
 
@@ -108,11 +109,11 @@ namespace DocumentMapper.Word.AddIn
                     {
                         case WdContentControlType.wdContentControlText:
 
-                            var mappedItem = DocumentMapping.Current.MappedItemDictionary[control.Tag];
-                            control.LockContents = false;
-                            control.LockContentControl = false;
-                            control.Range.Text = mappedItem.Name;
-                            control.LockContents = true;
+                            //var mappedItem = DocumentMapping.Current.MappedItemDictionary[control.Tag];
+                            //control.LockContents = false;
+                            //control.LockContentControl = false;
+                            //control.Range.Text = mappedItem.Name;
+                            //control.LockContents = true;
                             break;
                     }
                 });

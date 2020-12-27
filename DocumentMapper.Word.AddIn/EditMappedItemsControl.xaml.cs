@@ -47,7 +47,7 @@ namespace DocumentMapper.Word.AddIn
                 _selectedTreeView.Items.Add(CreateTreeViewItem(newMappedItem));
             }
 
-            DocumentMapping.Current.AddMappedItem(newMappedItem);
+            ///DocumentMapping.Current.AddMappedItem(newMappedItem);
             ChangeSelectedTreeViewItem(_selectedTreeView);
         }
 
@@ -63,7 +63,7 @@ namespace DocumentMapper.Word.AddIn
         private void SaveAndCloseBtn_Click(object sender, RoutedEventArgs e)
         {
             var path = Utils.DocumentMapperFilelocation();
-            Utils.SaveDocumentMap(DocumentMapping.Current, path);
+            //Utils.SaveDocumentMap(DocumentMapping.Current, path);
             this.Close();
         }
 
@@ -93,7 +93,7 @@ namespace DocumentMapper.Word.AddIn
             ParentNodesLabel.Content = _selectedTreeView.Header.ToString();
             if (_selectedTreeView.Tag != null)
             {
-                _selectedMappedItem = DocumentMapping.Current.MappedItemDictionary[_selectedTreeView.Tag.ToString()];
+               // _selectedMappedItem = DocumentMapping.Current.MappedItemDictionary[_selectedTreeView.Tag.ToString()];
                 MappedItemText.Text = _selectedMappedItem.Name;
                 AddMappedItemtn.Visibility = Visibility.Hidden;
                 UpdateMappedItemtn.Visibility = Visibility.Visible;
@@ -115,14 +115,14 @@ namespace DocumentMapper.Word.AddIn
             {
                 Header = "ROOT"
             });
-            await TreeViewController.CreateTreeViewItems(MappedItemTreeView.Items, DocumentMapping.Current.MappedItems);
+            //await TreeViewController.CreateTreeViewItems(MappedItemTreeView.Items, DocumentMapping.Current.MappedItems);
         }
 
         private void TreeViewItemChanged<T>(object sender, RoutedPropertyChangedEventArgs<T> e)
         {
             var treeView = (TreeView)sender;
             _selectedTreeView = (TreeViewItem)treeView.SelectedItem;
-            _selectedMappedItem = _selectedTreeView.Tag != null ? DocumentMapping.Current.MappedItemDictionary[_selectedTreeView.Tag.ToString()] : null;
+          //  _selectedMappedItem = _selectedTreeView.Tag != null ? DocumentMapping.Current.MappedItemDictionary[_selectedTreeView.Tag.ToString()] : null;
             ParentNodesLabel.Content = _selectedMappedItem != null ? _selectedMappedItem.Name : _parentRootLavel;
 
             if (_selectedMappedItem != null)
@@ -278,9 +278,9 @@ namespace DocumentMapper.Word.AddIn
         }
         public void addChild(TreeViewItem _sourceItem, TreeViewItem _targetItem)
         {
-            var sourceMappedItem = DocumentMapping.Current.MappedItemDictionary[_sourceItem.Tag.ToString()];
-            var parentMappedItem = DocumentMapping.Current.MappedItemDictionary[_targetItem.Tag.ToString()];
-            DocumentMapping.Current.ChangeParentItem(sourceMappedItem, parentMappedItem);
+           // var sourceMappedItem = DocumentMapping.Current.MappedItemDictionary[_sourceItem.Tag.ToString()];
+           // var parentMappedItem = DocumentMapping.Current.MappedItemDictionary[_targetItem.Tag.ToString()];
+          //  DocumentMapping.Current.ChangeParentItem(sourceMappedItem, parentMappedItem);
 
             // add item in target TreeViewItem 
             TreeViewItem item1 = new TreeViewItem();

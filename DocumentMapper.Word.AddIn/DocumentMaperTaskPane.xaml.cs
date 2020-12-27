@@ -34,7 +34,7 @@ namespace DocumentMapper.Word.AddIn
         private async System.Threading.Tasks.Task PopulateTreeView()
         {
             DocumentMapTreeView.Items.Clear();
-            await TreeViewController.CreateTreeViewItems(DocumentMapTreeView.Items, DocumentMapping.Current.MappedItems, MappedTreeViewItem_Click);
+            //await TreeViewController.CreateTreeViewItems(DocumentMapTreeView.Items, DocumentMapping.Current.MappedItems, MappedTreeViewItem_Click);
         }
 
         private static void CreateMapedItemRangeControl(MappedItem mappedItem)
@@ -85,7 +85,7 @@ namespace DocumentMapper.Word.AddIn
         private void TreeViewItemSelected(TreeViewItem selectedTreeViewItem)
         {
             _SelectedTreeViewItem = selectedTreeViewItem;
-            _SelectedMappedItem = DocumentMapping.Current.MappedItemDictionary[_SelectedTreeViewItem.Tag.ToString()];
+           // _SelectedMappedItem = DocumentMapping.Current.MappedItemDictionary[_SelectedTreeViewItem.Tag.ToString()];
 
             MappedItemNotesTex.Text = _SelectedMappedItem.Notes;
 
@@ -147,13 +147,13 @@ namespace DocumentMapper.Word.AddIn
             }
             else
             {
-                if (!DocumentMapping.Current.MappedItemDictionary.ContainsKey(treeItem.Tag.ToString()))
-                {
-                    throw new Exception($"Document map does not contain the item {treeItem.Tag.ToString()}");
-                }
+                //if (!DocumentMapping.Current.MappedItemDictionary.ContainsKey(treeItem.Tag.ToString()))
+                //{
+                //    throw new Exception($"Document map does not contain the item {treeItem.Tag.ToString()}");
+                //}
 
-                var parentMappedItem = (MappedItem)DocumentMapping.Current.MappedItemDictionary[treeItem.Tag.ToString()];
-                mappedItem = DocumentMapping.AddMappedItem(selectedText.Text, parentMappedItem);
+                //var parentMappedItem = (MappedItem)DocumentMapping.Current.MappedItemDictionary[treeItem.Tag.ToString()];
+                //mappedItem = DocumentMapping.AddMappedItem(selectedText.Text, parentMappedItem);
             }
 
             if (mappedItem != default(MappedItem))
@@ -175,9 +175,9 @@ namespace DocumentMapper.Word.AddIn
             {
                 var button = (Button)sender;
 
-                var mappedItem = DocumentMapping.Current.MappedItemDictionary[button.Tag.ToString()];
+               // var mappedItem = DocumentMapping.Current.MappedItemDictionary[button.Tag.ToString()];
 
-                CreateMapedItemTextControl(mappedItem);
+              //  CreateMapedItemTextControl(mappedItem);
 
                 var parent = (StackPanel)button.Parent;
 

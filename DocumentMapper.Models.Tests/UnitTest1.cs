@@ -13,7 +13,7 @@ namespace DocumentMapper.Models.Tests
         {
 
             var book = new Book("Working Title");
-            book.AddChapter(new Chapter());
+            //book.AddChapter(new Chapter());
             
 
 
