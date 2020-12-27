@@ -1,4 +1,5 @@
 ﻿using DocumentMapper.Models;
+using DocumentMapper.Models.AuthorsAid;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,9 +29,9 @@ namespace DocumentMapper.Word.AddIn
                 MessageBox.Show("You must provide a file name and a file path", "File path error");
             }
             else {
-                var path = $"{FilePathTxt.Text}/{DocumentMapFilenameTxt.Text}.xml";
-                Utils.SaveDocumentMap(new DocumentMap(), path);
-                Utils.LinkDocumentMap(path);
+                var filePath = $"{FilePathTxt.Text}/{DocumentMapFilenameTxt.Text}.xml";
+                Utils.SaveBookMap(new Book(DocumentMapFilenameTxt.Text), filePath);
+                Utils.LinkBookMap(filePath);
 
                 this.Hide();
                 this.Dispose();

@@ -22,7 +22,7 @@ namespace DocumentMapper.Word.AddIn
         {
             try
             {
-                Utils.LinkDocumentMap(DocumentMapPathTxt.Text);
+                Utils.LinkBookMap(DocumentMapPathTxt.Text);
                 this.Close();
             }
             catch (System.Runtime.InteropServices.COMException)

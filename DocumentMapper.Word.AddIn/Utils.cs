@@ -1,5 +1,6 @@
 ﻿using DocumentMapper.Models;
 using DocumentMapper.Models.AuthorsAid;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -32,9 +33,9 @@ namespace DocumentMapper.Word.AddIn
             return ApplicationVariables.GetVariable(ApplicationVariables.DocumentMapFilePath);
         }
 
-        internal static void LinkDocumentMap(string path)
+        internal static void LinkBookMap(string filePath)
         {
-            Globals.ThisAddIn.Application.ActiveDocument.Variables.Add(ApplicationVariables.DocumentMapFilePath, path);
+            Globals.ThisAddIn.Application.ActiveDocument.Variables.Add(ApplicationVariables.DocumentMapFilePath, filePath);
             Globals.ThisAddIn.Application.ActiveDocument.Save();
             Globals.ThisAddIn.InitializeDocumentMapper();
         }
@@ -46,14 +47,18 @@ namespace DocumentMapper.Word.AddIn
 
         public static Book LoadBook()
         {
-            var book = new Book();
-            var serializer = new XmlSerializer(typeof(DocumentMap));
-            using (var reader = new StreamReader(Utils.DocumentMapperFilelocation()))
+            var bookMap = default(Book);
+            try
             {
-                book = (Book)serializer.Deserialize(reader);
+                var file = File.ReadAllText(DocumentMapperFilelocation());
+                bookMap = JsonConvert.DeserializeObject<Book>(file);
+            }
+            catch(Exception ex)
+            {
+
             }
 
-            return book;
+            return bookMap;
         }
 
         internal static void UnLinkDocumentMap()
@@ -75,26 +80,10 @@ namespace DocumentMapper.Word.AddIn
 
     
 
-        internal static void SaveDocumentMap(DocumentMap documentMap, string FilePath = null)
+        internal static void SaveBookMap(Book bookMap, string FilePath)
         {
-            FilePath = FilePath ?? DocumentMapperFilelocation();
-            var writer = new XmlSerializer(typeof(DocumentMap));
-
-            if (String.IsNullOrEmpty(DocumentMapperFilelocation()))
-            {
-                using (var file = System.IO.File.Create(FilePath))
-                {
-                    writer.Serialize(file, documentMap);
-                }
-            }
-            else
-            {
-                using (var file = System.IO.File.Create(FilePath))
-                {
-                    writer.Serialize(file, documentMap);
-                }
-            }
-            
+            var json = JsonConvert.SerializeObject(bookMap);
+            File.WriteAllText(FilePath, json);
         }
     }
 }
