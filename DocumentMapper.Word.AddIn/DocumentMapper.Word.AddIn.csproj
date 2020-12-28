@@ -213,6 +213,9 @@
     <Compile Include="TreeViewController.cs" />
     <Compile Include="TreeViewExtensions.cs" />
     <Compile Include="Utils.cs" />
+    <Compile Include="Windows\AddMappedEntityWindow.xaml.cs">
+      <DependentUpon>AddMappedEntityWindow.xaml</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="DocumentMapperRibbon.resx">
       <DependentUpon>DocumentMapperRibbon.cs</DependentUpon>
     </EmbeddedResource>
@@ -271,6 +274,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="EditMappedItemsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AddMappedEntityWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

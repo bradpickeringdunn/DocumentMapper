@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800"
              Loaded="UserControl_Loaded">
     <Grid x:Name="DocumentMap">
-        <Button x:Name="AddNewMapping" Content="Quick Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" Margin="10,10,0,0" Click="Button_Click" Height="57"/>
+        <Button x:Name="AddNewMapping" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" Margin="10,10,0,0" Click="Button_Click" Height="57"/>
         
 
         <Button x:Name="EditMappedItemsBtn" Content="Add - Edit Item" HorizontalAlignment="Left" Margin="106,10,0,0" VerticalAlignment="Top" Width="92" Click="EditMappedTreeViewItem_Click" Height="21"/>
@@ -17,7 +17,7 @@
         <Label Content="Notes:" HorizontalAlignment="Left" Height="22" Margin="0,307,0,0" VerticalAlignment="Top" Width="86"/>
         <Button x:Name="RefreashBtn" Content="Refreash" HorizontalAlignment="Left" Height="20" Margin="106,47,0,0" VerticalAlignment="Top" Width="92" RenderTransformOrigin="-0.36,0.471" Click="RefreashBtn_Click"/>
 
-        <TabControl Margin="8">
+        <TabControl Margin="0,72,16,-56">
             <TabItem Header="Load-On-Demand">
                 <entityTypeControl:EntityTypeTreeViewControl Margin="-17,6,17,-6" />
             </TabItem>

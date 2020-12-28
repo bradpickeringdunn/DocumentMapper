@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using DocumentMapper.Models;
+using DocumentMapper.Word.AddIn.Windows;
 using Microsoft.Office.Interop.Word;
 using controls = System.Windows.Controls;
 
@@ -135,32 +136,33 @@ namespace DocumentMapper.Word.AddIn
             PopulateTreeView().Await();
         }
 
-        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void AddNewEntity(object sender, System.Windows.RoutedEventArgs e)
         {
-            var selectedText = Globals.ThisAddIn.Application.Selection;
-           // var treeItem = (TreeViewItem)DocumentMapTreeView.SelectedItem;
-            var mappedItem = default(MappedItem);
 
-            //if (treeItem == null)
-            //{
-            //    mappedItem = DocumentMapping.AddMappedItem(selectedText.Text);
-            //}
-          //  else
+          //  var selectedText = Globals.ThisAddIn.Application.Selection;
+          // // var treeItem = (TreeViewItem)DocumentMapTreeView.SelectedItem;
+          //  var mappedItem = default(MappedItem);
+
+          //  //if (treeItem == null)
+          //  //{
+          //  //    mappedItem = DocumentMapping.AddMappedItem(selectedText.Text);
+          //  //}
+          ////  else
+          ////  {
+          //      //if (!DocumentMapping.Current.MappedItemDictionary.ContainsKey(treeItem.Tag.ToString()))
+          //      //{
+          //      //    throw new Exception($"Document map does not contain the item {treeItem.Tag.ToString()}");
+          //      //}
+
+          //      //var parentMappedItem = (MappedItem)DocumentMapping.Current.MappedItemDictionary[treeItem.Tag.ToString()];
+          //      //mappedItem = DocumentMapping.AddMappedItem(selectedText.Text, parentMappedItem);
+          // // }
+
+          //  if (mappedItem != default(MappedItem))
           //  {
-                //if (!DocumentMapping.Current.MappedItemDictionary.ContainsKey(treeItem.Tag.ToString()))
-                //{
-                //    throw new Exception($"Document map does not contain the item {treeItem.Tag.ToString()}");
-                //}
-
-                //var parentMappedItem = (MappedItem)DocumentMapping.Current.MappedItemDictionary[treeItem.Tag.ToString()];
-                //mappedItem = DocumentMapping.AddMappedItem(selectedText.Text, parentMappedItem);
-           // }
-
-            if (mappedItem != default(MappedItem))
-            {
-               // controls.ItemCollection itemCollection = treeItem != null ? treeItem.Items : DocumentMapTreeView.Items;
-               // TreeViewController.CreateTreeViewItems(itemCollection, new List<MappedItem> { mappedItem }, MappedTreeViewItem_Click).Await();
-            }
+          //     // controls.ItemCollection itemCollection = treeItem != null ? treeItem.Items : DocumentMapTreeView.Items;
+          //     // TreeViewController.CreateTreeViewItems(itemCollection, new List<MappedItem> { mappedItem }, MappedTreeViewItem_Click).Await();
+          //  }
         }
 
         private void EditMappedTreeViewItem_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -199,12 +201,13 @@ namespace DocumentMapper.Word.AddIn
         }
 
 
-        public void XYZ(object obj, EventArgs e)
-        {
-            PopulateTreeView().Await();
-        }
-
         #endregion
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new AddMappedEntityWindow();
+
+            window.Show();
+        }
     }
 }
