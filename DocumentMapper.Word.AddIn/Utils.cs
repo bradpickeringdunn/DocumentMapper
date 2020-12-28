@@ -90,6 +90,21 @@ namespace DocumentMapper.Word.AddIn
             return bookMap;
         }
 
+        public static Entity GetEntity(string entityId)
+        {
+            Entity entity = default(Entity);
+
+            if (Guid.TryParse(entityId, out var id))
+            {
+                if (DocumentMapping.CurrentBook.EntityManifest.TryGetValue(id, out var mappeditem))
+                {
+                    entity = mappeditem;
+                }
+            }
+
+            return entity;
+        }
+
         internal static void UnLinkDocumentMap()
         {
             try

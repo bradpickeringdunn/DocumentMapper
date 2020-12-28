@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentMapper.Models.AuthorsAid;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,10 @@ namespace DocumentMapper.Word.AddIn.Windows
     {
         readonly EntityTypeViewModel _entityRefs;
 
+        EntityViewModel selectedParent;
+
+        string SelectedParentName = string.Empty;
+
         public AddMappedEntityWindow()
         {
             InitializeComponent();
@@ -42,6 +47,16 @@ namespace DocumentMapper.Word.AddIn.Windows
         private void AddMappedItem_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void TreeView_ParentEntityChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if(sender is TreeView)
+            {
+                var treeView = sender as TreeView;
+                selectedParent = (EntityViewModel)treeView.SelectedItem;
+                ParentNodesLabel.Content = selectedParent.Name;
+            }
         }
     }
 }
