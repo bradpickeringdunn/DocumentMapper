@@ -21,7 +21,7 @@ namespace DocumentMapper.Word.AddIn
         public DocumentMaperTaskPane()
         {
             InitializeComponent();
-            DocumentMapTreeView.SelectedItemChanged += new RoutedPropertyChangedEventHandler<object>(TreeViewItemChanged);
+            //DocumentMapTreeView.SelectedItemChanged += new RoutedPropertyChangedEventHandler<object>(TreeViewItemChanged);
         }
 
         #region Methods
@@ -33,7 +33,7 @@ namespace DocumentMapper.Word.AddIn
 
         private async System.Threading.Tasks.Task PopulateTreeView()
         {
-            DocumentMapTreeView.Items.Clear();
+            //DocumentMapTreeView.Items.Clear();
             //await TreeViewController.CreateTreeViewItems(DocumentMapTreeView.Items, DocumentMapping.Current.MappedItems, MappedTreeViewItem_Click);
         }
 
@@ -138,15 +138,15 @@ namespace DocumentMapper.Word.AddIn
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             var selectedText = Globals.ThisAddIn.Application.Selection;
-            var treeItem = (TreeViewItem)DocumentMapTreeView.SelectedItem;
+           // var treeItem = (TreeViewItem)DocumentMapTreeView.SelectedItem;
             var mappedItem = default(MappedItem);
 
-            if (treeItem == null)
-            {
-                mappedItem = DocumentMapping.AddMappedItem(selectedText.Text);
-            }
-            else
-            {
+            //if (treeItem == null)
+            //{
+            //    mappedItem = DocumentMapping.AddMappedItem(selectedText.Text);
+            //}
+          //  else
+          //  {
                 //if (!DocumentMapping.Current.MappedItemDictionary.ContainsKey(treeItem.Tag.ToString()))
                 //{
                 //    throw new Exception($"Document map does not contain the item {treeItem.Tag.ToString()}");
@@ -154,12 +154,12 @@ namespace DocumentMapper.Word.AddIn
 
                 //var parentMappedItem = (MappedItem)DocumentMapping.Current.MappedItemDictionary[treeItem.Tag.ToString()];
                 //mappedItem = DocumentMapping.AddMappedItem(selectedText.Text, parentMappedItem);
-            }
+           // }
 
             if (mappedItem != default(MappedItem))
             {
-                controls.ItemCollection itemCollection = treeItem != null ? treeItem.Items : DocumentMapTreeView.Items;
-                TreeViewController.CreateTreeViewItems(itemCollection, new List<MappedItem> { mappedItem }, MappedTreeViewItem_Click).Await();
+               // controls.ItemCollection itemCollection = treeItem != null ? treeItem.Items : DocumentMapTreeView.Items;
+               // TreeViewController.CreateTreeViewItems(itemCollection, new List<MappedItem> { mappedItem }, MappedTreeViewItem_Click).Await();
             }
         }
 
@@ -190,12 +190,12 @@ namespace DocumentMapper.Word.AddIn
             EditMappedItemWindow window;
             var currentSelection = Globals.ThisAddIn.Application.Selection;
             var selectedText = currentSelection != null ? currentSelection.Text : string.Empty;
-            var selectedItem = (TreeViewItem)DocumentMapTreeView.SelectedItem;
+         //   var selectedItem = (TreeViewItem)DocumentMapTreeView.SelectedItem;
 
-            window = new EditMappedItemWindow(selectedText, selectedItem);
-            window.Closed += new EventHandler(XYZ);
+         //   window = new EditMappedItemWindow(selectedText, selectedItem);
+        //    window.Closed += new EventHandler(XYZ);
 
-            window.Show();
+        //    window.Show();
         }
 
 

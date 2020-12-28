@@ -47,6 +47,8 @@ namespace DocumentMapper.Models.AuthorsAid
             else
             {
                 var parentEntityReference = FindEntityReference(entityReference.ParentId.Value);
+               
+
                 if (!parentEntityReference.ChildReferences.ContainsKey(entityReference.Id))
                 {
                     parentEntityReference.ChildReferences.Add(entityReference.Id, entityReference);

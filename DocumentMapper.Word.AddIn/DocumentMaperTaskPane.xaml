@@ -4,19 +4,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DocumentMapper.Word.AddIn"
+             xmlns:entityTypeControl="clr-namespace:DocumentMapper.Word.AddIn.Controls.EntityTypes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Loaded="UserControl_Loaded">
     <Grid x:Name="DocumentMap">
         <Button x:Name="AddNewMapping" Content="Quick Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" Margin="10,10,0,0" Click="Button_Click" Height="57"/>
-        <TreeView x:Name="DocumentMapTreeView" Margin="0,72,37,164">
-
-        </TreeView>
+        
 
         <Button x:Name="EditMappedItemsBtn" Content="Add - Edit Item" HorizontalAlignment="Left" Margin="106,10,0,0" VerticalAlignment="Top" Width="92" Click="EditMappedTreeViewItem_Click" Height="21"/>
         <TextBlock x:Name="MappedItemNotesTex" HorizontalAlignment="Left" Height="140" Margin="0,334,0,-24" TextWrapping="Wrap" VerticalAlignment="Top" Width="763"/>
         <Label Content="Notes:" HorizontalAlignment="Left" Height="22" Margin="0,307,0,0" VerticalAlignment="Top" Width="86"/>
         <Button x:Name="RefreashBtn" Content="Refreash" HorizontalAlignment="Left" Height="20" Margin="106,47,0,0" VerticalAlignment="Top" Width="92" RenderTransformOrigin="-0.36,0.471" Click="RefreashBtn_Click"/>
 
+        <TabControl Margin="8">
+            <TabItem Header="Load-On-Demand">
+                <entityTypeControl:EntityTypeTreeViewControl />
+            </TabItem>
+        </TabControl>
     </Grid>
 </UserControl>

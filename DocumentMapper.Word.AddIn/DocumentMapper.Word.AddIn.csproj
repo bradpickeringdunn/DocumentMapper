@@ -168,12 +168,11 @@
   -->
   <ItemGroup>
     <Compile Include="ApplicationVariables.cs" />
-    <Compile Include="Controls\EntityTypes\EntityTypesControl.xaml.cs">
-      <DependentUpon>EntityTypesControl.xaml</DependentUpon>
+    <Compile Include="Controls\EntityTypes\EntityTypeTreeViewControl.xaml.cs">
+      <DependentUpon>EntityTypeTreeViewControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\EntityTypes\EntityTypeViewModel.cs" />
     <Compile Include="Controls\EntityTypes\EntityViewModel.cs" />
-    <Compile Include="Controls\EntityTypes\TreeViewItemViewModel.cs" />
     <Compile Include="DocumentMapping.cs" />
     <Compile Include="DocumentMaperTaskPane.xaml.cs">
       <DependentUpon>DocumentMaperTaskPane.xaml</DependentUpon>
@@ -259,7 +258,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\EntityTypes\EntityTypesControl.xaml">
+    <Page Include="Controls\EntityTypes\EntityTypeTreeViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
