@@ -62,6 +62,27 @@ namespace DocumentMapper.Word.AddIn
             return mappedItem;
         }
 
+        internal static void CreateMapedEntityTextControl(Entity mappedItem)
+        {
+            try
+            {
+                var selectedText = Globals.ThisAddIn.Application.Selection;
+                //selectedText.InsertBefore($"{mappedItem.Name} ");
+                Microsoft.Office.Tools.Word.PlainTextContentControl textControl;
+
+                var vstoDocument = Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application.ActiveDocument);
+                textControl = vstoDocument.Controls.AddPlainTextContentControl(mappedItem.Name);
+                textControl.Text = mappedItem.Name;
+                textControl.LockContents = true;
+                textControl.Title = string.Empty;
+                textControl.Tag = mappedItem.Id.ToString();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
         public static Book CurrentBook
         {
             get

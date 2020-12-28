@@ -54,6 +54,10 @@ namespace TreeViewWithViewModelDemo.TextSearch
             get { return _entity.Title; }
         }
 
+        public Guid Id
+        {
+            get { return _entity.Id; }
+        }
         #endregion // Person Properties
 
         #region Presentation Members

@@ -45,5 +45,21 @@ namespace DocumentMapper.Word.AddIn.Controls.EntityTypes
             if (e.Key == Key.Enter)
                 _entityRefs.SearchCommand.Execute(null);
         }
+
+        private void AddItemButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button)
+            {
+                var button = (Button)sender;
+
+                if (Guid.TryParse(button.Tag.ToString(), out var entityId))
+                {
+                    if (DocumentMapping.CurrentBook.EntityManifest.TryGetValue(entityId, out var mappeditem))
+                    {
+                        DocumentMapping.CreateMapedEntityTextControl(mappeditem);
+                    }
+                }
+            }
+        }
     }
 }

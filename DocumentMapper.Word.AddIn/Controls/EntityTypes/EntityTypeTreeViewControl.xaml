@@ -62,7 +62,12 @@
 
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                        <TextBlock Text="{Binding Name}" />
+                        <Border Padding="0px 10px 0px 0px">
+                            <DockPanel  HorizontalAlignment="Stretch" >
+                                <TextBlock TextWrapping="Wrap" Text="{Binding Name}"/>
+                                <Button Tag="{Binding Id}"  Width="15px" Height="15px" Padding="15px 0px 0px 0px" HorizontalAlignment="Right" FontSize="20px" Click="AddItemButton_Click">+</Button>
+                            </DockPanel>
+                        </Border>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>

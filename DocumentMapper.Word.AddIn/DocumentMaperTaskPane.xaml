@@ -19,7 +19,7 @@
 
         <TabControl Margin="8">
             <TabItem Header="Load-On-Demand">
-                <entityTypeControl:EntityTypeTreeViewControl />
+                <entityTypeControl:EntityTypeTreeViewControl Margin="-17,6,17,-6" />
             </TabItem>
         </TabControl>
     </Grid>
