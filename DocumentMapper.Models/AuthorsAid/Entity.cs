@@ -52,11 +52,5 @@ namespace DocumentMapper.Models.AuthorsAid
                 IsRootItem = false;
             }
         }
-
-        public void AddChildEntity(Entity childEntity)
-        {
-            childEntity.ParentId = this.Id;
-            ChildEntities.Add(childEntity);
-        }
     }
 }

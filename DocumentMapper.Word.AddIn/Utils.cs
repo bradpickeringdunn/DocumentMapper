@@ -72,15 +72,10 @@ namespace DocumentMapper.Word.AddIn
             var child5 = new Entity("Entity1", "test1");
             var child6 = new Entity("Entity1", "test1");
 
-            child5.AddChildEntity(child6);
-            child4.AddChildEntity(child5);
-            child3.AddChildEntity(child4);
-            child2.AddChildEntity(child3);
-            child.AddChildEntity(child2);
-            
-
             bookMap.AddEntity(root1);
-            root1.AddChildEntity(child);
+            bookMap.AddEntity(child, root1);
+            bookMap.AddEntity(child2, child);
+
 
             bookMap.AddEntity(new Entity("Entity1", "test1"));
             bookMap.AddEntity(new Entity("Entity2", "test1"));

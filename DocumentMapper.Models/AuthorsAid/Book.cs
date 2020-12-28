@@ -44,9 +44,18 @@ namespace DocumentMapper.Models.AuthorsAid
             Chapters.Add(new Chapter(this.EntityTypes, chapterNumber, title, fileLocation));
         }
 
-        public void AddEntity(Entity newEntity)
+        public void AddEntity(Entity newEntity, Entity parentEntity = null)
         {
-            EntityManifest.Add(newEntity.Id, newEntity);
+            if (!EntityManifest.ContainsKey(newEntity.Id))
+            {
+                if(parentEntity != null && EntityManifest.ContainsKey(parentEntity.Id))
+                {
+                    newEntity.ParentId = parentEntity.Id;
+                }
+
+                EntityManifest.Add(newEntity.Id, newEntity);
+            }
+
             UpdateEntityType(new EntityReference(newEntity.Id, newEntity.Name, newEntity.EntityType, newEntity.ParentId));
         }
 
