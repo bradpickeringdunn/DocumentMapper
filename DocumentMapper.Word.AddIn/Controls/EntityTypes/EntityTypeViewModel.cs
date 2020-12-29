@@ -19,7 +19,7 @@ namespace TreeViewWithViewModelDemo.TextSearch
 
         Book _bookMap = default(Book);
    //     readonly ReadOnlyCollection<EntityViewModel> _rootEntities;
-        readonly IDictionary<string, List<EntityViewModel>> _rootEntities = new Dictionary<string, List<EntityViewModel>>();
+        readonly IDictionary<Guid, List<EntityViewModel>> _rootEntities = new Dictionary<Guid, List<EntityViewModel>>();
         List<EntityViewModel> _entities = new List<EntityViewModel>();
         readonly ICommand _searchCommand;
 
@@ -33,7 +33,7 @@ namespace TreeViewWithViewModelDemo.TextSearch
         public EntityTypeViewModel(Book bookMap)
         {
             _bookMap = bookMap;
-            foreach (var entityType in bookMap.EntityTypes)
+            foreach (var entityType in bookMap.EntityTypes.Values)
             {
                 var entities = new List<EntityViewModel>();
                 foreach (var entity in entityType.EntityReferences.Values)
@@ -41,7 +41,7 @@ namespace TreeViewWithViewModelDemo.TextSearch
                     entities.Add(new EntityViewModel(entity));
                 }
 
-                _rootEntities.Add(entityType.TypeName, entities);
+                _rootEntities.Add(entityType.Id, entities);
             }
 
             _searchCommand = new SearchFamilyTreeCommand(this);
@@ -51,11 +51,12 @@ namespace TreeViewWithViewModelDemo.TextSearch
 
         #region Methods
 
-        public void ChangeEntity(string entityType)
+        public void ChangeSelectedEntityType(Guid entityTypeId)
         {
-            if(_rootEntities.TryGetValue(entityType, out var entities))
+            if(_rootEntities.TryGetValue(entityTypeId, out var entities))
             {
                 _entities = entities;
+                SelecedEntityType = _bookMap.EntityTypes[entityTypeId];
             }
             else
             {
@@ -72,7 +73,7 @@ namespace TreeViewWithViewModelDemo.TextSearch
         {
             get
             {
-                return new ObservableCollection<EntityType>(_bookMap.EntityTypes);
+                return new ObservableCollection<EntityType>(_bookMap.EntityTypes.Values);
             }
         }
 

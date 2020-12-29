@@ -6,10 +6,10 @@ namespace DocumentMapper.Models.AuthorsAid
 {
     public class Entity
     {
-        public Entity(string name, string entityType,  Guid? parentId = null)
+        public Entity(string name, Guid entityTypeId,  Guid? parentId = null)
         {
             this.Name = name;
-            this.EntityType = entityType;
+            this.EntityTypeId = entityTypeId;
             Id = Guid.NewGuid();
             ParentId = parentId;
             ChildEntities= new List<Entity>();
@@ -25,7 +25,7 @@ namespace DocumentMapper.Models.AuthorsAid
         public string Name { get; set; }
 
         [JsonProperty("entityType")]
-        public string EntityType { get; }
+        public Guid EntityTypeId { get; }
 
         [JsonProperty("position")]
         public int Position { get; set; }

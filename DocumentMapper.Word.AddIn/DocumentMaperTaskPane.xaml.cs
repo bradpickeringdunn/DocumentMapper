@@ -204,7 +204,7 @@ namespace DocumentMapper.Word.AddIn
         #endregion
 
         private void Button_Click(object sender, RoutedEventArgs e)
-        {
+            {
             var window = new AddMappedEntityWindow();
 
             window.Show();

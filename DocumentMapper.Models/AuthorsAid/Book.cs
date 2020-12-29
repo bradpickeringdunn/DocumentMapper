@@ -7,14 +7,17 @@ namespace DocumentMapper.Models.AuthorsAid
 {
     public class Book
     {
-        public Book()
-        {}
+        Dictionary<Guid, EntityType> _entityTypes;
 
         [JsonConstructor]
         public Book(string title)
         {
             Title = title;
-            EntityTypes = new List<EntityType>();
+
+            var entityType = new EntityType("");
+            _entityTypes = new Dictionary<Guid, EntityType>();
+            _entityTypes.Add(entityType.Id, entityType);
+            
             Chapters = new List<Chapter>();
             EntityManifest = new Dictionary<Guid, Entity>();
         }
@@ -35,7 +38,20 @@ namespace DocumentMapper.Models.AuthorsAid
         public IDictionary<Guid, Entity> EntityManifest { get; internal set; }
 
         [JsonProperty("entityTypes")]
-        public IList<EntityType> EntityTypes { get; internal set; }
+        public IReadOnlyDictionary<Guid, EntityType> EntityTypes {
+            get
+            {
+                return _entityTypes;
+            }
+            private set
+            {
+                _entityTypes.Clear();
+                foreach (var entitytype in value)
+                {
+                    _entityTypes.Add(entitytype.Key, entitytype.Value);
+                }
+            }
+        }
 
         public void AddChapter(string fileLocation, string title = "")
         {
@@ -46,7 +62,11 @@ namespace DocumentMapper.Models.AuthorsAid
 
         public void AddEntity(Entity newEntity, Entity parentEntity = null)
         {
-            if (!EntityManifest.ContainsKey(newEntity.Id))
+            if(!EntityTypes.ContainsKey(newEntity.EntityTypeId))
+            {
+                // TODO: handle this
+            }
+            else if (!EntityManifest.ContainsKey(newEntity.Id))
             {
                 if(parentEntity != null && EntityManifest.ContainsKey(parentEntity.Id))
                 {
@@ -54,37 +74,36 @@ namespace DocumentMapper.Models.AuthorsAid
                 }
 
                 EntityManifest.Add(newEntity.Id, newEntity);
+                UpdateEntityTypeReferences(new EntityReference(newEntity.Id, newEntity.Name, newEntity.EntityTypeId, newEntity.ParentId));
             }
-
-            UpdateEntityType(new EntityReference(newEntity.Id, newEntity.Name, newEntity.EntityType, newEntity.ParentId));
         }
 
-        private void UpdateEntityType(EntityReference entityReference)
+        private void UpdateEntityTypeReferences(EntityReference entityReference)
         {
-            var entityType = EntityTypes.FirstOrDefault(x => x.TypeName == entityReference.EntityType);
-            
-            if(entityType == default)
+            if (EntityTypes.TryGetValue(entityReference.EntityTypeId, out var entityType))
             {
-                entityType = new EntityType(entityReference.EntityType);
-                EntityTypes.Add(entityType);
+                entityType.AddEntityReference(entityReference);
             }
-
-            entityType.AddEntityReference(entityReference);
-
         }
 
         public void AddParentToEntity(Guid entityId, Guid parentEntityId)
         {
             if(EntityManifest.TryGetValue(entityId, out var childEntity) && EntityManifest.TryGetValue(parentEntityId, out var parentEntity))
             {
-                if (childEntity.EntityType == parentEntity.EntityType)
+                if (childEntity.EntityTypeId == parentEntity.EntityTypeId)
                 {
                     childEntity.ParentId = parentEntity.Id;
-                    var entityType = EntityTypes.First(x => x.TypeName == parentEntity.EntityType);
-                    entityType.AddParentEntity(childEntity.Id, parentEntity.Id);
+                    var entityType = EntityTypes.First(x => x.Key == parentEntity.EntityTypeId);
+                    entityType.Value.AddParentEntity(childEntity.Id, parentEntity.Id);
                 }
-
             }
+        }
+
+        public EntityType AddEntityType(string text)
+        {
+            var entityType = new EntityType(text);
+            _entityTypes.Add(entityType.Id, entityType);
+            return entityType;
         }
 
         public void RemoveParentFromEntity(Guid childId1, Guid parentId)
@@ -92,8 +111,8 @@ namespace DocumentMapper.Models.AuthorsAid
             if (EntityManifest.TryGetValue(childId1, out var childEntity) && EntityManifest.TryGetValue(parentId, out var parentEntity))
             {
                 childEntity.ParentId = null;
-                var entityType = EntityTypes.First(x => x.TypeName == parentEntity.EntityType);
-                entityType.RemoveParentEntity(childEntity.Id, parentEntity.Id);
+                var entityType = EntityTypes.First(x => x.Key == parentEntity.EntityTypeId);
+                entityType.Value.RemoveParentEntity(childEntity.Id, parentEntity.Id);
             }
         }
     }

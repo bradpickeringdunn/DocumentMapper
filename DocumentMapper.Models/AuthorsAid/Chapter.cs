@@ -7,7 +7,7 @@ namespace DocumentMapper.Models.AuthorsAid
 {
     public class Chapter
     {
-        public Chapter(IList<EntityType> entityTypes, int chapterNumber, string title, string fileLocation)
+        public Chapter(IReadOnlyDictionary<Guid, EntityType> entityTypes, int chapterNumber, string title, string fileLocation)
         {
             Id = Guid.NewGuid();
             Title = title;
@@ -39,7 +39,7 @@ namespace DocumentMapper.Models.AuthorsAid
         public string FileLocation { get; }
 
         [JsonIgnore()]
-        public IList<EntityType> AllEntityTypes { get; }
+        public IReadOnlyDictionary<Guid,EntityType> AllEntityTypes { get; }
 
         public void AddNewEntity(Book book, Entity newEntity)
         {

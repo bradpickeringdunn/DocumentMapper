@@ -1,4 +1,6 @@
 ﻿using DocumentMapper.Models.AuthorsAid;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,6 +16,8 @@ namespace DocumentMapper.Word.AddIn.Windows
         EntityTypeViewModel _viewModel;
         readonly Book _bookMap;
 
+        EntityViewModel _setAsRootEntity = new EntityViewModel(new EntityReference(Guid.NewGuid(), "Set as root entity", Guid.NewGuid(), null));
+
         EntityViewModel selectedParent;
 
         string SelectedParentName = string.Empty;
@@ -23,15 +27,31 @@ namespace DocumentMapper.Word.AddIn.Windows
             InitializeComponent();
 
             _bookMap = DocumentMapping.CurrentBook;
+            selectedParent = _setAsRootEntity;
+            SelectedParentName = _setAsRootEntity.Name;
+            ParentNodesLabel.Content = _setAsRootEntity.Name;
 
             // Create UI-friendly wrappers around the 
             // raw data objects (i.e. the view-model).
             _viewModel = new EntityTypeViewModel(_bookMap);
 
             // Let the UI bind to the view-model.
-            base.DataContext = _viewModel;
+            AddEntityTreeViewSource();
 
             SetEntityTypeList();
+        }
+
+        private void AddEntityTreeViewSource()
+        {
+            var entitySource = new List<EntityViewModel>()
+            {
+                _setAsRootEntity
+            };
+
+            entitySource.AddRange(_viewModel.RootEntities);
+            entitiesTreView.ItemsSource = entitySource;
+            entitiesTreView.Items.Refresh();
+            entitiesTreView.UpdateLayout();
         }
 
         private void AddMappedItem_Click(object sender, RoutedEventArgs e)
@@ -63,7 +83,14 @@ namespace DocumentMapper.Word.AddIn.Windows
 
         private void entityTypesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            if (sender is ListBox)
+            {
+                var listBox = sender as ListBox;
+                var selectedItem = listBox.SelectedItem as EntityType;
+
+                _viewModel.ChangeSelectedEntityType(selectedItem.Id);
+                AddEntityTreeViewSource();
+            }
         }
 
         private void showAddNewEntityBtn_Click(object sender, RoutedEventArgs e)
@@ -82,7 +109,7 @@ namespace DocumentMapper.Word.AddIn.Windows
         {
             if (newEntityTypeTxt.Text.Length > 0)
             {
-      
+                _bookMap.AddEntityType(newEntityTypeTxt.Text);
                 hideAddNewEntityBtn_Click(sender, e);
 
             }

@@ -7,11 +7,11 @@ namespace DocumentMapper.Models.AuthorsAid
 {
     public class EntityReference
     {
-        public EntityReference(Guid id, string title, string entityType, Guid? parentId)
+        public EntityReference(Guid id, string title, Guid entityTypeId, Guid? parentId)
         {
             Id = id;
             Title = title;
-            EntityType = entityType;
+            EntityTypeId = entityTypeId;
             ParentId = parentId;
             ChildReferences = new Dictionary<Guid, EntityReference>();
         }
@@ -26,7 +26,7 @@ namespace DocumentMapper.Models.AuthorsAid
         public Guid? ParentId { get; set; }
 
         [JsonProperty("entityType")]
-        public string EntityType { get; }
+        public Guid EntityTypeId { get; }
 
         [JsonProperty]
         public IDictionary<Guid, EntityReference> ChildReferences { get; }

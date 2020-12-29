@@ -9,9 +9,13 @@ namespace DocumentMapper.Models.AuthorsAid
     {
         public EntityType(string name)
         {
+            Id = Guid.NewGuid();
             TypeName = name;
             EntityReferences = new Dictionary<Guid, EntityReference>();
         }
+
+        [JsonProperty("id")]
+        public Guid Id { get; }
 
         [JsonProperty("typeName")]
         public string TypeName { get; set; }
