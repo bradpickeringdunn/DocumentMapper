@@ -54,31 +54,11 @@ namespace DocumentMapper.Word.AddIn
                 var file = File.ReadAllText(DocumentMapperFilelocation());
                 bookMap = JsonConvert.DeserializeObject<Book>(file);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
 
-            var entityType = bookMap.AddEntityType("Test1");
-            var root1 = new Entity("Root Entity1", entityType.Id);
-            var child = new Entity("child Entity1", entityType.Id);
-            var child2 = new Entity("Entity child 1", entityType.Id);
-            var child3 = new Entity("Entity1", entityType.Id);
-            var child4 = new Entity("Entity1", entityType.Id);
-            var child5 = new Entity("Entity1", entityType.Id);
-            var child6 = new Entity("Entity1", entityType.Id);
-
-            bookMap.AddEntity(root1);
-            bookMap.AddEntity(child, root1);
-            bookMap.AddEntity(child2, child);
-
-            bookMap.AddEntity(new Entity("Entity1", entityType.Id));
-            bookMap.AddEntity(new Entity("Entity2", entityType.Id));
-            bookMap.AddEntity(new Entity("Entity3", entityType.Id));
-            bookMap.AddEntity(new Entity("Entity4", entityType.Id));
-            bookMap.AddEntity(new Entity("Entity5", entityType.Id));
-            bookMap.AddEntity(new Entity("Entity6", entityType.Id));
-           
             return bookMap;
         }
 
@@ -116,8 +96,17 @@ namespace DocumentMapper.Word.AddIn
 
     
 
-        internal static void SaveBookMap(Book bookMap, string FilePath)
+        internal static void SaveBookMap(Book bookMap, string FilePath = null)
         {
+            if (FilePath == null && Utils.ActiveDocumentLinkedToDocumentMap())
+            {
+                FilePath = Utils.DocumentMapperFilelocation();
+            }
+            else
+            {
+                // TODO: Error handling;
+            }
+
             var json = JsonConvert.SerializeObject(bookMap);
             File.WriteAllText(FilePath, json);
         }

@@ -22,6 +22,8 @@ namespace DocumentMapper.Word.AddIn.Windows
 
         string SelectedParentName = string.Empty;
 
+        EntityType _selectedEntityType;
+
         public AddMappedEntityWindow()
         {
             InitializeComponent();
@@ -36,27 +38,23 @@ namespace DocumentMapper.Word.AddIn.Windows
             _viewModel = new EntityTypeViewModel(_bookMap);
 
             // Let the UI bind to the view-model.
-            AddEntityTreeViewSource();
+            UpdateEntityTreeViewSource();
 
             SetEntityTypeList();
         }
 
-        private void AddEntityTreeViewSource()
+        private void UpdateEntityTreeViewSource()
         {
             var entitySource = new List<EntityViewModel>()
             {
                 _setAsRootEntity
             };
 
+            _viewModel = new EntityTypeViewModel(_bookMap);
             entitySource.AddRange(_viewModel.RootEntities);
             entitiesTreView.ItemsSource = entitySource;
             entitiesTreView.Items.Refresh();
             entitiesTreView.UpdateLayout();
-        }
-
-        private void AddMappedItem_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void TreeView_ParentEntityChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -71,26 +69,34 @@ namespace DocumentMapper.Word.AddIn.Windows
 
         #region Entity Type List
 
-        private void SetEntityTypeList()
+        private void SetEntityTypeList(Guid? selectedEntityTypeId = null)
         {
-            entityTypesList.ItemsSource = _viewModel.EntityTypes;
-            if (_viewModel.EntityTypes.Any())
+            var entityTypeList = new List<ListBoxItem>();
+            foreach(var entityType in _bookMap.EntityTypes.Values)
             {
-                _viewModel.SelecedEntityType = _viewModel.EntityTypes.First();
-                entityTypesList.SelectedItem = _viewModel.EntityTypes;
+                entityTypeList.Add(new ListBoxItem()
+                {
+                    Content = String.IsNullOrEmpty(entityType.TypeName) ? "Unnamed" : entityType.TypeName,
+                    Tag = entityType.Id
+                }); 
             }
+
+            entityTypeList.FirstOrDefault().IsSelected = true;
+            if(!selectedEntityTypeId.HasValue)
+            {
+                _selectedEntityType = _bookMap.EntityTypes.First().Value;
+            }
+
+            entityTypesList.ItemsSource = entityTypeList;
         }
 
         private void entityTypesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is ListBox)
-            {
-                var listBox = sender as ListBox;
-                var selectedItem = listBox.SelectedItem as EntityType;
+            var listBox = sender as ListBox;
+            var selectedItem = listBox.SelectedItem as ListBoxItem;
 
-                _viewModel.ChangeSelectedEntityType(selectedItem.Id);
-                AddEntityTreeViewSource();
-            }
+            _viewModel.ChangeSelectedEntityType(Guid.Parse(selectedItem.Tag.ToString()));
+            UpdateEntityTreeViewSource();
         }
 
         private void showAddNewEntityBtn_Click(object sender, RoutedEventArgs e)
@@ -114,8 +120,45 @@ namespace DocumentMapper.Word.AddIn.Windows
 
             }
         }
+
         #endregion
 
+        private void AddMappedItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            AddNewEntity();
+            UpdateEntityTreeViewSource();
+        }
 
+        private void AddnClose_Click(object sender, RoutedEventArgs e)
+        {
+            AddNewEntity();
+            Utils.SaveBookMap(_bookMap);
+        }
+
+        private void AddNewEntity()
+        {
+            if (selectedParent == null)
+            {
+                // TODO: error message
+            }
+            else if (String.IsNullOrEmpty(MappedItemText.Text))
+            {
+                // TODO: Error message
+            }
+            else if (_selectedEntityType == null)
+            {
+
+            }
+            else
+            {
+                Guid? parentId = null;
+                if (selectedParent != _setAsRootEntity)
+                {
+                    parentId = selectedParent.Id;
+                }
+
+                _bookMap.AddEntity(new Entity(MappedItemText.Text, _selectedEntityType.Id, parentId));
+            }
+        }
     }
 }

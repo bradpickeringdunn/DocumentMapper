@@ -48,7 +48,7 @@ namespace DocumentMapper.Models.AuthorsAid
                 _entityTypes.Clear();
                 foreach (var entitytype in value)
                 {
-                    _entityTypes.Add(entitytype.Key, entitytype.Value);
+                    _entityTypes.Add(entitytype.Value.Id, entitytype.Value);
                 }
             }
         }
