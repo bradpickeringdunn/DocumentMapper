@@ -17,8 +17,10 @@ namespace TreeViewWithViewModelDemo.TextSearch
     {
         #region Data
 
-        readonly ReadOnlyCollection<EntityViewModel> _firstGeneration;
-        readonly IList<EntityViewModel> _rootEntities = new List<EntityViewModel>();
+        Book _bookMap = default(Book);
+   //     readonly ReadOnlyCollection<EntityViewModel> _rootEntities;
+        readonly IDictionary<string, List<EntityViewModel>> _rootEntities = new Dictionary<string, List<EntityViewModel>>();
+        List<EntityViewModel> _entities = new List<EntityViewModel>();
         readonly ICommand _searchCommand;
 
         IEnumerator<EntityViewModel> _matchingPeopleEnumerator;
@@ -28,21 +30,53 @@ namespace TreeViewWithViewModelDemo.TextSearch
 
         #region Constructor
 
-        public EntityTypeViewModel(ICollection<EntityReference> rootEntities)
+        public EntityTypeViewModel(Book bookMap)
         {
-            foreach (var entity in rootEntities)
+            _bookMap = bookMap;
+            foreach (var entityType in bookMap.EntityTypes)
             {
-                _rootEntities.Add(new EntityViewModel(entity));
-            }
+                var entities = new List<EntityViewModel>();
+                foreach (var entity in entityType.EntityReferences.Values)
+                {
+                    entities.Add(new EntityViewModel(entity));
+                }
 
-            _firstGeneration = new ReadOnlyCollection<EntityViewModel>(_rootEntities);
+                _rootEntities.Add(entityType.TypeName, entities);
+            }
 
             _searchCommand = new SearchFamilyTreeCommand(this);
         }
 
         #endregion // Constructor
 
+        #region Methods
+
+        public void ChangeEntity(string entityType)
+        {
+            if(_rootEntities.TryGetValue(entityType, out var entities))
+            {
+                _entities = entities;
+            }
+            else
+            {
+                // TODO: throw catch deal with exception
+            }
+        }
+
+        #endregion
+
+
         #region Properties
+
+        public ObservableCollection<EntityType> EntityTypes
+        {
+            get
+            {
+                return new ObservableCollection<EntityType>(_bookMap.EntityTypes);
+            }
+        }
+
+        public EntityType SelecedEntityType { get; set; }
 
         #region FirstGeneration
 
@@ -50,9 +84,16 @@ namespace TreeViewWithViewModelDemo.TextSearch
         /// Returns a read-only collection containing the first person 
         /// in the family tree, to which the TreeView can bind.
         /// </summary>
-        public ReadOnlyCollection<EntityViewModel> FirstGeneration
+        public ReadOnlyCollection<EntityViewModel> RootEntities
         {
-            get { return _firstGeneration; }
+            get
+            {
+                if (!_entities.Any())
+                {
+                    _entities.AddRange(_rootEntities.First().Value);
+                }
+                return new ReadOnlyCollection<EntityViewModel>(_entities);
+            }
         }
 
         #endregion // FirstGeneration
@@ -144,7 +185,7 @@ namespace TreeViewWithViewModelDemo.TextSearch
 
         void VerifyMatchingPeopleEnumerator()
         {
-            var matches = this.FindMatches(_searchText, _rootEntities.First());
+            var matches = this.FindMatches(_searchText, _entities.First());
             _matchingPeopleEnumerator = matches.GetEnumerator();
 
             if (!_matchingPeopleEnumerator.MoveNext())

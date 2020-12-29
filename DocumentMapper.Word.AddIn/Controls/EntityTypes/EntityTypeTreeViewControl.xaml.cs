@@ -29,11 +29,11 @@ namespace DocumentMapper.Word.AddIn.Controls.EntityTypes
             InitializeComponent();
 
             // Get raw family tree data from a database.
-            var entityType = DocumentMapping.CurrentBook.EntityTypes.First();
+            
 
             // Create UI-friendly wrappers around the 
             // raw data objects (i.e. the view-model).
-            _entityRefs = new EntityTypeViewModel(entityType.EntityReferences.Values);
+            _entityRefs = new EntityTypeViewModel(DocumentMapping.CurrentBook);
 
             // Let the UI bind to the view-model.
             base.DataContext = _entityRefs;

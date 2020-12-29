@@ -1,18 +1,7 @@
 ﻿using DocumentMapper.Models.AuthorsAid;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TreeViewWithViewModelDemo.TextSearch;
 
 namespace DocumentMapper.Word.AddIn.Windows
@@ -22,7 +11,8 @@ namespace DocumentMapper.Word.AddIn.Windows
     /// </summary>
     public partial class AddMappedEntityWindow : Window
     {
-        readonly EntityTypeViewModel _entityRefs;
+        EntityTypeViewModel _viewModel;
+        readonly Book _bookMap;
 
         EntityViewModel selectedParent;
 
@@ -32,16 +22,16 @@ namespace DocumentMapper.Word.AddIn.Windows
         {
             InitializeComponent();
 
-            // Get raw family tree data from a database.
-            var entityType = DocumentMapping.CurrentBook.EntityTypes.First();
+            _bookMap = DocumentMapping.CurrentBook;
 
             // Create UI-friendly wrappers around the 
             // raw data objects (i.e. the view-model).
-            _entityRefs = new EntityTypeViewModel(entityType.EntityReferences.Values);
+            _viewModel = new EntityTypeViewModel(_bookMap);
 
             // Let the UI bind to the view-model.
-            base.DataContext = _entityRefs;
+            base.DataContext = _viewModel;
 
+            SetEntityTypeList();
         }
 
         private void AddMappedItem_Click(object sender, RoutedEventArgs e)
@@ -58,5 +48,47 @@ namespace DocumentMapper.Word.AddIn.Windows
                 ParentNodesLabel.Content = selectedParent.Name;
             }
         }
+
+        #region Entity Type List
+
+        private void SetEntityTypeList()
+        {
+            entityTypesList.ItemsSource = _viewModel.EntityTypes;
+            if (_viewModel.EntityTypes.Any())
+            {
+                _viewModel.SelecedEntityType = _viewModel.EntityTypes.First();
+                entityTypesList.SelectedItem = _viewModel.EntityTypes;
+            }
+        }
+
+        private void entityTypesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
+
+        private void showAddNewEntityBtn_Click(object sender, RoutedEventArgs e)
+        {
+            showAddNewEntityBtn.Visibility = Visibility.Collapsed;
+            newEntityTypePanel.Visibility = Visibility.Visible;
+        }
+
+        private void hideAddNewEntityBtn_Click(object sender, RoutedEventArgs e)
+        {
+            showAddNewEntityBtn.Visibility = Visibility.Visible;
+            newEntityTypePanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void addNewEntityBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (newEntityTypeTxt.Text.Length > 0)
+            {
+      
+                hideAddNewEntityBtn_Click(sender, e);
+
+            }
+        }
+        #endregion
+
+
     }
 }

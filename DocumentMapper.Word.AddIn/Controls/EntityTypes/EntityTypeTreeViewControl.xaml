@@ -43,7 +43,7 @@
             </Border>
 
             <!-- FAMILY TREE -->
-            <TreeView ItemsSource="{Binding FirstGeneration}">
+            <TreeView ItemsSource="{Binding RootEntities}">
                 <TreeView.ItemContainerStyle>
                     <!-- 
         This Style binds a TreeViewItem to a PersonViewModel. 
