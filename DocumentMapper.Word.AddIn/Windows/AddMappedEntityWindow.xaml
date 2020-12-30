@@ -7,20 +7,20 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="AntiqueWhite">
-       
-            <Button x:Name="AddMappedItem" Content="Add Item" HorizontalAlignment="Left" Height="27" Margin="373,9,0,0" VerticalAlignment="Top" Width="109" Click="AddMappedItem_Click_1" />
+
+        <Button x:Name="AddMappedItem" Content="Add Item" HorizontalAlignment="Left" Height="27" Margin="373,9,0,0" VerticalAlignment="Top" Width="109" Click="AddMappedItem_Click_1" />
         <TextBox x:Name="MappedItemText" HorizontalAlignment="Left" Height="27" Margin="155,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="178"/>
         <Label x:Name="ParentNodesLabel" Content="{Binding SelectedParentName}" HorizontalAlignment="Left" Height="26" Margin="119,9,0,0" VerticalAlignment="Top" Width="178" BorderThickness="1" Background="#FFC9C9C9">
-                <Label.BorderBrush>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="Black" Offset="0"/>
-                        <GradientStop Color="White" Offset="1"/>
-                    </LinearGradientBrush>
-                </Label.BorderBrush>
-            </Label>
-            <Label Content="Item Name:" HorizontalAlignment="Left" Height="27" Margin="48,54,0,0" VerticalAlignment="Top" Width="77"/>
-            <Label Content="Parent Item:" HorizontalAlignment="Left" Height="27" Margin="37,9,0,0" VerticalAlignment="Top" Width="77"/>
-            <Label Content="" HorizontalAlignment="Left" Height="32" Margin="130,40,0,0" VerticalAlignment="Top" Width="18" BorderThickness="1,0,0,1" BorderBrush="Black"/>
+            <Label.BorderBrush>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </Label.BorderBrush>
+        </Label>
+        <Label Content="Item Name:" HorizontalAlignment="Left" Height="27" Margin="48,54,0,0" VerticalAlignment="Top" Width="77"/>
+        <Label Content="Parent Item:" HorizontalAlignment="Left" Height="27" Margin="37,9,0,0" VerticalAlignment="Top" Width="77"/>
+        <Label Content="" HorizontalAlignment="Left" Height="32" Margin="130,40,0,0" VerticalAlignment="Top" Width="18" BorderThickness="1,0,0,1" BorderBrush="Black"/>
         <TreeView HorizontalAlignment="Left" Height="228" Margin="10,141,0,0" SelectedItemChanged="TreeView_ParentEntityChanged" Name="entitiesTreView"
                   VerticalAlignment="Top" Width="200" ItemsSource="{Binding RootEntities}">
             <TreeView.ItemContainerStyle>
@@ -49,19 +49,40 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
-        <ListBox HorizontalAlignment="Left" Height="100" Margin="295,115,0,0" VerticalAlignment="Top" Width="100" Name="entityTypesList" SelectionChanged="entityTypesList_SelectionChanged"
+        <ListBox HorizontalAlignment="Left" Height="84" Margin="248,141,0,0" VerticalAlignment="Top" Width="147" Name="entityTypesList" SelectionChanged="entityTypesList_SelectionChanged"
                  DisplayMemberPath="TypeName">
         </ListBox>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="295,215,0,0" VerticalAlignment="Top" Width="75" Name="showAddNewEntityBtn" Click="showAddNewEntityBtn_Click"/>
-        <Label Content="Types" HorizontalAlignment="Left" Margin="295,89,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.425,-0.059"/>
-        <StackPanel HorizontalAlignment="Left" Height="39" Margin="295,215,0,0" VerticalAlignment="Top" Width="161" Name="newEntityTypePanel" Visibility="Collapsed">
-            <TextBlock Name="newEntityTypeTxt" >E.g. Characters</TextBlock>
+
+        <StackPanel Name="ListBoxControlPanel" HorizontalAlignment="Left" Height="23" Margin="237,231,0,0" VerticalAlignment="Top" Width="173" Orientation="Horizontal">
+            <Button Content="Add New" Width="75" Name="showAddNewEntityBtn" Click="showAddNewEntityBtn_Click"/>
+            <Button Margin="15px 0px 0px 0px" Content="Edit" Width="75" Name="EditEntityType" Click="EditEntityType_Click"/>
+
+        </StackPanel>
+
+        <Label Content="Types / genre's" HorizontalAlignment="Left" Margin="274,115,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.425,-0.059"/>
+
+        <StackPanel HorizontalAlignment="Left" Height="73" Margin="628,248,0,0" VerticalAlignment="Top" Width="144" Name="AddEntityTypePanel" Visibility="Visible">
+            <Label Content="Add new type / genre"/>
+            <TextBox Name="newEntityTypeTxt" />
             <StackPanel Orientation="Horizontal">
                 <Button Name="addNewEntityTyeBut" Click="addNewEntityBtn_Click" Content="Add New Type"/>
                 <Button x:Name="hideNewEntityTypeBtn" Click="hideAddNewEntityBtn_Click" Content="Cancel" Margin="15px 0px 0px 0px"/>
             </StackPanel>
         </StackPanel>
+
+        <StackPanel HorizontalAlignment="Left" Height="73" Margin="628,335,0,0" VerticalAlignment="Top" Width="144" Name="ExitEntityTypePanel" Visibility="Visible">
+            <Label x:Name="editTypeLabel" Content="Editing tyype:"/>
+            <TextBox x:Name="EditEntityTypeTxt" />
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="EditEntityTyeBut" Click="UpdateEntityType_Click" Content="Save"/>
+                <Button x:Name="HideEditEntityTypeBtn" Click="HideEditEntityTypeBtn_Click" Content="Cancel" Margin="15px 0px 0px 0px"/>
+            </StackPanel>
+        </StackPanel>
+
+
         <Label Content="Select a parent entity" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Top"/>
-        <Button Content="Add 'n Close" HorizontalAlignment="Left" Margin="373,54,0,0" VerticalAlignment="Top" Width="75" Name="AddnClose" Click="AddnClose_Click"/>
+        <Button Content="Add 'n Close" HorizontalAlignment="Left" Margin="373,54,0,0" VerticalAlignment="Top" Width="109" Name="AddnClose" Click="AddnClose_Click" Height="27"/>
+        <TextBox HorizontalAlignment="Left" Height="89" Margin="248,280,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="147" Name="EntityNotesTextBox"/>
+        <Label Content="Notes" HorizontalAlignment="Left" Margin="248,259,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

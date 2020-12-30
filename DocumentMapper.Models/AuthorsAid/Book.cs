@@ -115,5 +115,13 @@ namespace DocumentMapper.Models.AuthorsAid
                 entityType.Value.RemoveParentEntity(childEntity.Id, parentEntity.Id);
             }
         }
+
+        public void UpdateEntityType(EntityType updateEntityType)
+        {
+            if (_entityTypes.TryGetValue(updateEntityType.Id, out var entityType))
+            {
+                entityType.TypeName = updateEntityType.TypeName;
+            }
+        }
     }
 }
